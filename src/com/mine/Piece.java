@@ -1,4 +1,8 @@
 package com.mine;
 
-public class Piece {
+public abstract class Piece {
+
+    // Properties
+    protected Position pos;
+
 }
