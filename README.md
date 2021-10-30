@@ -78,18 +78,18 @@ The locations of the pits and beacons are variables. The paths cannot be explore
 Submit a pdf-copy of a written report that discusses the Problem Formulation for the agent, as well as a description of the three levels of rational behavior. The report must have a minimum of two pages (excluding the title page), single-spaced, short-bond paper, containing the following:
 
 1. Introduction
-In paragraph form, describe the goal of the GOLD MINER agent and formulate the problem.
+- In paragraph form, describe the goal of the GOLD MINER agent and formulate the problem.
 
 2. AI Features
-Present a flowchart of how the bot works first.
+- Present a flowchart of how the bot works first.
 Below the flowchart, enumerate and describe in detail the AI algorithms and rules used by the bot.
 3. Results and Analysis
-Determine the specific states and configurations that the agent operates on.
-Determine the specific actions, and the states (configurations) on which the actions are applicable (include illustrations for transition table).
-Specify how the goal state can be determined and detected by the agent.
-Discuss what situations the bot cannot handle. Explain why these situations cannot be handled by the bot. Point out which part of the Artificial Intelligence of the bot made it fail.
-You may include screenshots if need be.
+- Determine the specific states and configurations that the agent operates on.
+- Determine the specific actions, and the states (configurations) on which the actions are applicable (include illustrations for transition table).
+- Specify how the goal state can be determined and detected by the agent.
+- Discuss what situations the bot cannot handle. Explain why these situations cannot be handled by the bot. Point out which part of the Artificial Intelligence of the bot made it fail.
+- You may include screenshots if need be.
 4. Recommendations
-Based on the analysis of the performance of the bot, point out the weaknesses of the bot. Identify and explain possible ways to address these weaknesses.
+- Based on the analysis of the performance of the bot, point out the weaknesses of the bot. Identify and explain possible ways to address these weaknesses.
 5. References (Follow the APA format)
 6. Appendix A: Contribution of Members
