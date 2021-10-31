@@ -16,9 +16,13 @@ public class RandomAlgorithm {
         Miner miner = new Miner();
         MiningManager manager = new MiningManager(quarry, miner);
 
+        Piece scanResult;
+
         while(!manager.isGameOver(quarry, miner)) {
 
-            if(miner.scan(quarry) == null) {
+            scanResult = miner.scan(quarry);
+
+            if(scanResult == null) {
                 manager.incrementScan();
 
                 if(manager.isMinerFacingEdge()) {
@@ -40,16 +44,17 @@ public class RandomAlgorithm {
                 }
 
             }
-            else if(miner.scan(quarry) instanceof Pit) {
+            else if(scanResult instanceof Pit) {
 
                 miner.rotate();
                 manager.incrementRotate();
 
             }
-            else if(miner.scan(quarry) instanceof Beacon) {
+            else if(scanResult instanceof Beacon) {
 
                 miner.gotoBeacon(quarry);
 
+                // while miner does not detect gold after scanning, rotate
                 while(!(miner.scan(quarry) instanceof PotOfGold)) {
                     miner.rotate();
                     manager.incrementRotate();
@@ -58,7 +63,7 @@ public class RandomAlgorithm {
                 miner.gotoGold(quarry);
 
             }
-            else if(miner.scan(quarry) instanceof PotOfGold) {
+            else if(scanResult instanceof PotOfGold) {
                 miner.gotoGold(quarry);
                 
             }
