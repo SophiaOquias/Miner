@@ -6,10 +6,14 @@ public class Beacon extends Piece {
 
     private int squaresToGold;
 
+    // Constructor
+    public Beacon(PotOfGold gold) {
+        this.calculateSquaresToGold(gold);
+    }
 
     // Methods
 
-    public void calculateSquaresToGold(PotOfGold gold) {
+    private void calculateSquaresToGold(PotOfGold gold) {
     }
 
 }
