@@ -1,5 +1,5 @@
-package com.rij;
-import com.mine.Piece;
+package com.mine.board;
+import com.mine.pieces.Piece;
 
 public class Quarry {
 	

@@ -1,4 +1,4 @@
-package com.rij;
+package com.mine.pieces;
 
 public class Position {
 	

@@ -1,4 +1,4 @@
-package com.mine;
+package com.mine.pieces;
 
 public class Stone extends PotOfGold{
 }
