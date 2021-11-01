@@ -1,7 +1,7 @@
 package com.mine.simulation;
 
 import com.mine.pieces.*;
-import com.mine.board.*; 
+import com.mine.board.*;
 
 import java.util.*;
 
@@ -21,12 +21,12 @@ public class RandomAlgorithm {
 
         Piece scanResult;
 
-        while(!manager.isGameOver(quarry, miner)) {
+        while(!(manager.isGameOver(quarry, miner))) {
 
             scanResult = miner.scan(quarry);
+            manager.incrementScan();
 
             if(scanResult == null) {
-                manager.incrementScan();
 
                 if(manager.isMinerFacingEdge()) {
 
@@ -55,20 +55,34 @@ public class RandomAlgorithm {
             }
             else if(scanResult instanceof Beacon) {
 
-                miner.gotoBeacon(quarry);
+                miner.move();
+                manager.incrementMove();
 
-                // while miner does not detect gold after scanning, rotate
+                // while scan returns beacon
+                while(miner.scan(quarry) instanceof Beacon) {
+                    manager.incrementScan();
+                    miner.move();
+                    manager.incrementMove();
+                }
+                miner.incrementScan();
+
+                // while scan does not return pot of gold
                 while(!(miner.scan(quarry) instanceof PotOfGold)) {
+                    manager.incrementScan();
                     miner.rotate();
                     manager.incrementRotate();
                 }
+                miner.incrementScan();
 
-                miner.gotoGold(quarry);
+                miner.move();
+                manager.incrementMove();
 
             }
             else if(scanResult instanceof PotOfGold) {
-                miner.gotoGold(quarry);
-                
+
+                miner.move();
+                manager.incrementMove();
+
             }
 
         }
