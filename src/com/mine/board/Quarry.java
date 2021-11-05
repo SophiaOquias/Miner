@@ -4,6 +4,7 @@ import com.mine.pieces.Piece;
 public class Quarry {
 	
 	private int size;
+
 	private Piece[][] mine;
 	
 	//Constructor
@@ -16,5 +17,16 @@ public class Quarry {
 	public void setSize(int input) {
 		this.size = input;
 	}
+	
+	public int getSize() {
+		return size;
+	}
+	
+	public Piece[][] getMine() {
+		return mine;
+	}
 
+	public void setMine(Piece[][] mine) {
+		this.mine = mine;
+	}
 }
