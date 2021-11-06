@@ -21,8 +21,18 @@ public class Miner {
     // Methods
 
     public void move(){
+
         if(this.front == 1){
-            
+            setPosition( new Position(currentPosition.getX() - 1, currentPosition.getY()) );
+        }
+        else if(this.front == 2){
+            setPosition( new Position(currentPosition.getX(), currentPosition.getY() + 1) );
+        }
+        else if(this.front == 3){
+            setPosition( new Position(currentPosition.getX() + 1, currentPosition.getY()) );
+        }
+        else{
+            setPosition( new Position(currentPosition.getX(), currentPosition.getY() - 1) );
         }
     }
 
