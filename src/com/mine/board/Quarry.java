@@ -1,4 +1,4 @@
-package com.mine.board;
+ package com.mine.board;
 import com.mine.pieces.Piece;
 
 public class Quarry {
