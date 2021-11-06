@@ -2,6 +2,8 @@ package com.mine.simulation;
 
 import com.mine.pieces.*;
 import com.mine.board.*;
+import com.mine.miner.Miner;
+import com.mine.miner.MiningManager;
 
 import java.util.*;
 
