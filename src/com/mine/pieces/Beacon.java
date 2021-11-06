@@ -8,8 +8,9 @@ public class Beacon extends Piece {
 
     // Constructor
 
-    public Beacon(PotOfGold gold) {
+    public Beacon(PotOfGold gold, Position position) {
         this.calculateSquaresToGold(gold);
+        this.pos = position;
     }
 
     // Methods
