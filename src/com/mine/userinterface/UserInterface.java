@@ -1,6 +1,7 @@
 package com.mine.userinterface; 	
 
 import com.mine.board.Quarry;
+import com.mine.miner.Miner;
 import com.mine.pieces.*;
 
 public class UserInterface {
@@ -9,7 +10,7 @@ public class UserInterface {
 		
 		for(int i = 0; i < size; i++)
 			for(int j = 0; j < size; j++) {
-				if(miner.getCurrentPosition().getX() == i && miner.getCurrentPosition().getY() == j) displayMiner();
+				if(miner.getPosition().getX() == i && miner.getPosition().getY() == j) displayMiner();
 				else displayPiece(quarry.getMine()[i][j]);
 			}
 	}
