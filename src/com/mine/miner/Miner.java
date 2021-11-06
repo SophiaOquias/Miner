@@ -1,4 +1,4 @@
-package com.mine.simulation;
+package com.mine.miner;
 
 import com.mine.pieces.*;
 import com.mine.board.*;
