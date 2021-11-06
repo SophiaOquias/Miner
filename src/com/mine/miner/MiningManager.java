@@ -16,10 +16,7 @@ public class MiningManager {
     // Constructor
 
     public MiningManager(Quarry quarry, Miner miner){
-        spawnPit(quarry);
-        spawnPotOfGold(quarry);
-        spawnBeacon(quarry);
-        spawnMiner(miner);
+        
     }
 
     // Methods
@@ -39,43 +36,6 @@ public class MiningManager {
 
     public boolean isMinerFacingEdge(Quarry quarry, Miner miner){
         return true;
-    }
-
-    //Spawn Functions
-    public void spawnPit(Quarry quarry){
-    	int x = 0, y = 0;
-    	
-    	Random rand = new Random();
-    	
-    	while(x == 0) 
-    		x = rand.nextInt(quarry.getSize());
-    	
-    	while(y == 0) 
-    		y = rand.nextInt(quarry.getSize());
-    	
-    	quarry.setPitPos(new Position(x, y));
-    }
-
-    public void spawnPotOfGold(Quarry quarry){
-    	int x, y;
-    	
-    	//THIS IS TEMPORARY
-    	x = y =  2;
-    	
-    	quarry.setGoldPos(new Position(x, y));
-    }
-
-    public void spawnBeacon(Quarry quarry){
-    	int x, y;
-    	
-    	//THIS IS TEMPORARY
-    	x = y =  3;
-    	
-    	quarry.setBeaconPos(new Position(x, y));
-    }
-    
-    public void spawnMiner(Miner miner){
-    	miner.setPosition(new Position(0, 0));
     }
     
     //Miner Functions

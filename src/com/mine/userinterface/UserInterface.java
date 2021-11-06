@@ -8,11 +8,13 @@ public class UserInterface {
 	public void displayQuarry(Quarry quarry, Miner miner) {
 		int size = quarry.getSize();
 		
-		for(int i = 0; i < size; i++)
+		for(int i = 0; i < size; i++) {
 			for(int j = 0; j < size; j++) {
 				if(miner.getPosition().getX() == i && miner.getPosition().getY() == j) displayMiner();
 				else displayPiece(quarry.getMine()[i][j]);
 			}
+			System.out.print("\n");
+		}
 	}
 	
 	private void displayPiece(Piece piece) {
