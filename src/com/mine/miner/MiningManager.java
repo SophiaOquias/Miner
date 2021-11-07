@@ -35,7 +35,17 @@ public class MiningManager {
     }
 
     public boolean isMinerFacingEdge(Quarry quarry, Miner miner){
-        return true;
+
+        if(miner.getFront() == miner.NORTH && miner.getX() == 0)
+            return true;
+        else if(miner.getFront() == miner.EAST && miner.getY() == quarry.getSize() - 1)
+            return true;
+        else if(miner.getFront() == miner.SOUTH && miner.getX() == quarry.getSize() - 1)
+            return true;
+        else if(miner.getFront() == miner.WEST && miner.getY() == 0)
+            return true;
+
+        return false;
     }
     
     //Miner Functions
