@@ -14,10 +14,10 @@ public class Miner {
     private int y;
 
     // Define Constants
-    private final int NORTH = 1;
-    private final int EAST  = 2;
-    private final int SOUTH = 3;
-    private final int WEST  = 4;
+    public final int NORTH = 1;
+    public final int EAST  = 2;
+    public final int SOUTH = 3;
+    public final int WEST  = 4;
 
     // Constructor
     public Miner(){
