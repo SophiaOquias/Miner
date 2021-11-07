@@ -92,47 +92,51 @@ public class Quarry {
     }
     
 	//Methods
-	public void setSize(int input) {
-		this.size = input;
-	}
-	
+    
+    //Getters
 	public int getSize() {
 		return size;
 	}
-
+	
 	public Piece getPiece(int x, int y) {
 		return this.mine[x][y];
 	}
 	
 	public Piece[][] getMine() {
-		return mine;
+		return this.mine;
 	}
-
+	
+	public Position getPitPos() {
+		return this.PitPos;
+	}
+	
+	public Position getGoldPos() {
+		return this.GoldPos;
+	}
+	
+	public Position getBeaconPos() {
+		return this.BeaconPos;
+	}
+	
+	
+	//Setters
+	public void setSize(int input) {
+		this.size = input;
+	}
+	
 	public void setMine(Piece[][] mine) {
 		this.mine = mine;
 	}
 
-	public Position getPitPos() {
-		return PitPos;
-	}
-
 	public void setPitPos(Position pitPos) {
-		PitPos = pitPos;
-	}
-
-	public Position getGoldPos() {
-		return GoldPos;
+		this.PitPos = pitPos;
 	}
 
 	public void setGoldPos(Position goldPos) {
-		GoldPos = goldPos;
-	}
-
-	public Position getBeaconPos() {
-		return BeaconPos;
+		this.GoldPos = goldPos;
 	}
 
 	public void setBeaconPos(Position beaconPos) {
-		BeaconPos = beaconPos;
+		this.BeaconPos = beaconPos;
 	}
 }
