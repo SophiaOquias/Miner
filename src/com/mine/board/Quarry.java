@@ -95,7 +95,7 @@ public class Quarry {
     
     //Getters
 	public int getSize() {
-		return size;
+		return this.size;
 	}
 	
 	public Piece getPiece(int x, int y) {
