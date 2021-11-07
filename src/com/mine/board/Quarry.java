@@ -87,7 +87,8 @@ public class Quarry {
     }
 
     public void spawnMiner(Miner miner){
-    	miner.setPosition(new Position(0, 0));
+    	miner.setX(0);
+    	miner.setY(0);
     }
     
 	//Methods
@@ -97,6 +98,10 @@ public class Quarry {
 	
 	public int getSize() {
 		return size;
+	}
+
+	public Piece getPiece(int x, int y) {
+		return this.mine[x][y];
 	}
 	
 	public Piece[][] getMine() {
