@@ -21,16 +21,17 @@ public class RandomAlgorithm {
         Miner miner = new Miner();
         MiningManager manager = new MiningManager(quarry, miner);
 
-        Piece scanResult;
+        char scanResult;
 
         while(!(manager.isGameOver(quarry, miner))) {
 
             scanResult = miner.scan(quarry);
             manager.incrementScan();
 
-            if(scanResult == null) {
+            // if scan does not detect a piece
+            if(scanResult == 'N') {
 
-                if(manager.isMinerFacingEdge()) {
+                if(manager.isMinerFacingEdge(quarry, miner)) {
 
                     // rotate 180 degrees
                     for(int i = 0; i < 2; i++) {
@@ -49,38 +50,44 @@ public class RandomAlgorithm {
                 }
 
             }
-            else if(scanResult instanceof Pit) {
+
+            // if scan detects a pit
+            else if(scanResult == 'P') {
 
                 miner.rotate();
                 manager.incrementRotate();
 
             }
-            else if(scanResult instanceof Beacon) {
+
+            // if scan detects a beacon
+            else if(scanResult == 'B') {
 
                 miner.move();
                 manager.incrementMove();
 
                 // while scan returns beacon
-                while(miner.scan(quarry) instanceof Beacon) {
+                while(miner.scan(quarry) == 'B') {
                     manager.incrementScan();
                     miner.move();
                     manager.incrementMove();
                 }
-                miner.incrementScan();
+                manager.incrementScan();
 
                 // while scan does not return pot of gold
-                while(!(miner.scan(quarry) instanceof PotOfGold)) {
+                while(miner.scan(quarry) != 'G') {
                     manager.incrementScan();
                     miner.rotate();
                     manager.incrementRotate();
                 }
-                miner.incrementScan();
+                manager.incrementScan();
 
                 miner.move();
                 manager.incrementMove();
 
             }
-            else if(scanResult instanceof PotOfGold) {
+
+            // if scan detects a pot of gold
+            else if(scanResult == 'G') {
 
                 miner.move();
                 manager.incrementMove();
