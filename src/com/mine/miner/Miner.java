@@ -10,50 +10,80 @@ public class Miner {
     // Properties
 
     private int front;
-    private Position currentPosition; 
+    private int x;
+    private int y;
+
+    // Define Constants
+    private final int NORTH = 1;
+    private final int EAST  = 2;
+    private final int SOUTH = 3;
+    private final int WEST  = 4;
 
     // Constructor
     public Miner(){
-        this.front = 2;
-        this.currentPosition = new Position(0,0);
+        this.front = EAST;
+        this.x = 0;
+        this.y = 0;
     }
 
     // Methods
 
     public void move(){
 
-        if(this.front == 1){
-            setPosition( new Position(currentPosition.getX() - 1, currentPosition.getY()) );
-        }
-        else if(this.front == 2){
-            setPosition( new Position(currentPosition.getX(), currentPosition.getY() + 1) );
-        }
-        else if(this.front == 3){
-            setPosition( new Position(currentPosition.getX() + 1, currentPosition.getY()) );
-        }
-        else{
-            setPosition( new Position(currentPosition.getX(), currentPosition.getY() - 1) );
-        }
+        if(this.front == NORTH) this.x--;
+        else if(this.front == EAST) this.y++;
+        else if(this.front == SOUTH) this.x++;
+        else if(this.front == WEST) this.y--;
+
     }
 
-    public Piece[][] scan(Quarry quarry){
-        
+    public char scan(Quarry quarry){
+
+        if(this.front == NORTH) {
+            for(int i = this.x; i <= 0; i--) {
+                Piece scannedPiece = quarry.getPiece(i, this.y);
+                if(scannedPiece instanceof Beacon) return 'B';
+                else if(scannedPiece instanceof PotOfGold) return 'G';
+                else if(scannedPiece instanceof Pit) return 'P';
+            }
+        }
+
+        else if(this.front == EAST) {
+            for(int i = this.y; i < quarry.getSize(); i++) {
+                Piece scannedPiece = quarry.getPiece(this.x, i);
+                if(scannedPiece instanceof Beacon) return 'B';
+                else if(scannedPiece instanceof PotOfGold) return 'G';
+                else if(scannedPiece instanceof Pit) return 'P';
+            }
+        }
+
+        else if(this.front == SOUTH) {
+            for(int i = this.x; i < quarry.getSize(); i++) {
+                Piece scannedPiece = quarry.getPiece(i, this.y);
+                if(scannedPiece instanceof Beacon) return 'B';
+                else if(scannedPiece instanceof PotOfGold) return 'G';
+                else if(scannedPiece instanceof Pit) return 'P';
+            }
+        }
+
+        if(this.front == WEST) {
+            for(int i = this.y; i <= 0; i--) {
+                Piece scannedPiece = quarry.getPiece(this.x, i);
+                if(scannedPiece instanceof Beacon) return 'B';
+                else if(scannedPiece instanceof PotOfGold) return 'G';
+                else if(scannedPiece instanceof Pit) return 'P';
+            }
+        }
+
+        return 'N'; // not sure about this, can't return null for some reason
     }
 
     public void rotate(){
 
-        if(this.front == 1){
-            this.front = 2;
-        }
-        else if(this.front == 2){
-            this.front = 3;
-        }
-        else if(this.front == 3){
-            this.front = 4;
-        }
-        else{
-            this.front = 1;
-        }
+        if(this.front == WEST)
+            this.front = NORTH;
+        else
+            this.front++;
 
     }
 
@@ -65,10 +95,9 @@ public class Miner {
     public void setFront(int front){
         this.front = front;
     }
-    public Position getPosition(){
-        return this.currentPosition;
-    }
-    public void setPosition(Position currentPosition){
-        this.currentPosition = currentPosition;
-    }
+    public int getX() { return this.x; }
+    public int getY() { return this.y; }
+    public void setX(int x) { this.x = x; }
+    public void setY(int y) { this.y = y; }
+
 }
