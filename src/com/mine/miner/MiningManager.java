@@ -23,15 +23,21 @@ public class MiningManager {
     
     //Game Functions
     public boolean isOnPit(Quarry quarry, Miner miner){
-    	return true;
+    	if (quarry.getPitPos().getX() == miner.getX() && quarry.getPitPos().getY() == miner.getY()) //miner's X & Y position == pit position in quarry
+    		return true;
+    	return false;
     }
 
     public boolean isOnPotOfGold(Quarry quarry, Miner miner){
-        return true;
+    	if (quarry.getGoldPos().getX() == miner.getX() && quarry.getPitPos().getY() == miner.getY()) 
+    		return true;
+        return false;
     }
 
     public boolean isGameOver(Quarry quarry, Miner miner){
-        return true;
+        if (isOnPit(quarry,miner) == true || isOnPotOfGold(quarry, miner) == true) 
+        	return true;
+    	return false;
     }
 
     public boolean isMinerFacingEdge(Quarry quarry, Miner miner){
