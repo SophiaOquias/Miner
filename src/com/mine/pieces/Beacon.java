@@ -23,5 +23,9 @@ public class Beacon extends Piece {
             this.squaresToGold = Math.abs(gold.pos.getY() - this.pos.getY());
 
     }
+    
+    public int getSquaresToGold() {
+    	return this.squaresToGold;
+    }
 
 }
