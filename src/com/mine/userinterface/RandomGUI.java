@@ -1,4 +1,4 @@
-package com.mine.simulation;
+package com.mine.userinterface;
 
 import com.mine.pieces.*;
 import com.mine.board.*;
@@ -7,7 +7,7 @@ import com.mine.miner.MiningManager;
 
 import java.util.*;
 
-public class RandomAlgorithm {
+public class RandomGUI {
 
     public void randomAlgorithm() {
 
