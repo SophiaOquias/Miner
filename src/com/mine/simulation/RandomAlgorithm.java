@@ -9,7 +9,7 @@ import java.util.*;
 
 public class RandomAlgorithm {
 
-    public static void main(String[] args) {
+    public void randomAlgorithm() {
 
         // get size of quarry
         Scanner sc = new Scanner(System.in);
