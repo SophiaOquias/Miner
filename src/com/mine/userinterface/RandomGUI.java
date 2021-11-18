@@ -113,25 +113,6 @@ public class RandomGUI extends JPanel{
                 miner.move();
                 manager.incrementMove();
 
-                // while scan returns beacon
-                while(miner.scan(quarry) == 'B') {
-                    manager.incrementScan();
-                    miner.move();
-                    manager.incrementMove();
-                }
-                manager.incrementScan();
-
-                // while scan does not return pot of gold
-                while(miner.scan(quarry) != 'G') {
-                    manager.incrementScan();
-                    miner.rotate();
-                    manager.incrementRotate();
-                }
-                manager.incrementScan();
-
-                miner.move();
-                manager.incrementMove();
-
             }
 
             // if scan detects a pot of gold
