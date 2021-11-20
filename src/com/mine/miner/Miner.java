@@ -12,6 +12,7 @@ public class Miner {
     private int front;
     private int x;
     private int y;
+    private int heuristicValue; 
 
     // Define Constants
     public final int NORTH = 1;
@@ -36,7 +37,7 @@ public class Miner {
         else if(this.front == WEST) this.y--;
 
     }
-
+    
     public char scan(Quarry quarry){
 
         if(this.front == NORTH) {
@@ -86,6 +87,8 @@ public class Miner {
             this.front++;
 
     }
+    
+
 
     // Getters and Setters
 
@@ -95,6 +98,19 @@ public class Miner {
     public void setFront(int front){
         this.front = front;
     }
+    public int getHeuristicValue() {
+    	return this.heuristicValue;
+    }
+    
+    public void setHeuristicValue(char resultScan) {
+        switch(resultScan) {
+            case 'P' : this.heuristicValue = -1; break; 
+            case 'N' : this.heuristicValue = 0; break; 
+            case 'B' : this.heuristicValue = 1; break;
+            case 'G' : this.heuristicValue = 2; break;
+        }
+    }
+    
     public int getX() { return this.x; }
     public int getY() { return this.y; }
     public void setX(int x) { this.x = x; }
