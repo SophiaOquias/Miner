@@ -1,106 +1,101 @@
 package com.mine.userinterface;
 
-import com.mine.pieces.*;
-import com.mine.board.*;
-import com.mine.miner.Miner;
-import com.mine.miner.MiningManager;
+import com.mine.simulation.SmartMiner;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import java.awt.*;
-import java.util.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class SmartGUI extends JPanel {
-	
-	//Properties
-	private Quarry quarry;
-	private Miner miner;
-	private MiningManager manager;
-	private Image[] images;
-	
-	//Constants
-	private final int IMG_SIZE = 30;
-	private final int OFFSET = 50;
-	
-	//Image constants
-	private final int NUM_IMG = 5;
-	private final int MINER = 1;
-	private final int BEACON = 2;
-	private final int PIT = 3;
-	private final int GOLD = 4;
-	private final int STONE = 5;
-	
-	public SmartGUI(int size) {
-		this.quarry = new Quarry(size);
-		this.manager = new MiningManager(quarry, miner);
-	}
-	
-	public boolean minerCompare(Miner m1, Miner m2) {
-	    if(m1.getX() == m2.getX() &&
-	        m1.getY() == m2.getY() &&
-	        m1.getFront() == m2.getFront())
-	        return true;
-	   return false;
-	}
-	
-	@SuppressWarnings("unused")
-	public boolean isInList(ArrayList<Miner> nodeList, Miner node) {
-		for(int i = 0; i < nodeList.size(); i++) {
-		    if(minerCompare(nodeList.get(i), node));
-		        return true; 
-		}
-		
-		return false; 
+public class SmartGUI {
+
+    private JFrame smartFrame;
+    private JFrame sliderFrame;
+    private JSlider slider;
+    private JButton okayButton;
+    private JLabel sizeLabel;
+    private int size;
+
+    public void createSliderFrame() {
+
+        // instantiating Swing components
+        this.sliderFrame = new JFrame();
+        this.okayButton = new JButton("Okay");
+        this.slider = new JSlider(8, 64);
+        this.sizeLabel = new JLabel("Selected Size: ");
+
+        // sliderFrame settings
+        this.sliderFrame.setSize(450, 200);
+        this.sliderFrame.add(this.slider);
+        this.sliderFrame.add(this.okayButton);
+        this.sliderFrame.add(this.sizeLabel);
+        this.sliderFrame.setLayout(null);
+        this.sliderFrame.setLocationRelativeTo(null); // makes frame start at center
+        this.sliderFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        // "selected size: " text settings
+        this.sizeLabel.setBounds(20, 70, 400, 100);
+
+        // button settings
+        this.okayButton.setBounds(250, 100, 100, 30);
+        this.okayButton.addActionListener(new ButtonListener());
+
+        // slider settings
+        this.slider.setBounds(10, 0, 400, 100);
+        this.slider.setMinorTickSpacing(1);
+        this.slider.setMajorTickSpacing(8);
+        this.slider.setPaintTicks(true);
+        this.slider.setPaintLabels(true);
+        this.slider.addChangeListener(new SliderListener());
+        this.slider.setVisible(true);
+
+        this.sliderFrame.setVisible(true);
+
     }
-	
-	public void smartAlgorithm() {
-		Stack<Miner> nodeList = new Stack<>();
-		ArrayList<Miner> exploredNodes = new ArrayList<>();
-		
 
-		exploredNodes.add(new Miner());
+    public void createSmartFrame() {
+        this.smartFrame = new JFrame();
+        JScrollPane scrollPane = new JScrollPane(new SmartMiner(this.size));
 
-		while(!nodeList.isEmpty() && !manager.isOnPotOfGold(quarry, miner)) {
-			exploredNodes.add(nodeList.pop()); 
-			
-			for(int i = 0; i < 2; i++) {
-				Miner[] tempList = new Miner[2];
-				
-				// adding possible actions to tempList 
-				if(i == 0) { // move action 
-				    tempList[i] = new Miner();
-				    if(!(manager.isMinerFacingEdge(quarry, miner))) {
-				        tempList[i].move();
-                        tempList[i].setHeuristicValue(tempList[i].scan(quarry));
-				    }
-				    else {
-                        tempList[i] = null; 
-				    }
-				}
-				else { //rotate action
-				    tempList[i] = new Miner();
-				    tempList[i].rotate();
-				    tempList[i].setHeuristicValue(tempList[i].scan(quarry));
-				}
-				
-				// adding nodes to stack based on greater h(n) value 
-				if(isInList(exploredNodes, tempList[0]) || tempList[0] == null) {
-				    nodeList.push(tempList[1]); 							
-				}
-				else if(isInList(exploredNodes, tempList[1])) {
-				    nodeList.push(tempList[0]);
-				}
-				//check if moveNode's h(n) >= rotateNode's h(n)
-				else if(tempList[0].getHeuristicValue() >= tempList[1].getHeuristicValue()) {
-					nodeList.push(tempList[1]); // push rotate node
-					nodeList.push(tempList[0]); // push move node
-				}
-				else {
-					nodeList.push(tempList[0]); // push move node
-					nodeList.push(tempList[1]); // push rotate node
-				}
-				
-			}
-		}
-	}
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
+        if (this.size <= 20) {
+            this.smartFrame.setSize(new Dimension(
+                    (size + 2) * 30,
+                    (size + 2) * 30 + 50
+            ));
+        } else {
+            this.smartFrame.setSize(600, 650);
+        }
+
+        this.smartFrame.add(scrollPane);
+        this.smartFrame.setTitle("Smart Rational Level Miner");
+        this.smartFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.smartFrame.setLocationRelativeTo(null); // makes window open on center
+        this.smartFrame.setVisible(true);
+    }
+
+    public class ButtonListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            sliderFrame.setVisible(false);
+            createSmartFrame();
+        }
+    }
+
+    public class SliderListener implements ChangeListener {
+
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            size = slider.getValue();
+            sizeLabel.setText("Selected Size: " + size);
+        }
+    }
 }
