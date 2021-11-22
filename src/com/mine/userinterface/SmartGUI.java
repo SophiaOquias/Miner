@@ -44,6 +44,7 @@ public class SmartGUI extends JPanel {
 		this.initBoard(size);
 		this.loadImages();
 
+		// sets size of panel
 		this.setPreferredSize(
 				new Dimension(
 						quarry.getSize() * IMG_SIZE,
@@ -51,14 +52,19 @@ public class SmartGUI extends JPanel {
 				)
 		);
 
+		// initializes timer
 		this.timer = new Timer(DELAY, new FastPlay());
 
+		// initializes buttons
 		this.playButton = new JButton("Play");
 		this.stepButton = new JButton("Play One Step");
 
+		// adds ActionListeners to buttons
 		this.playButton.addActionListener(new FastPlay());
 
+		// adds buttons to panel
 		this.add(this.playButton);
+		this.add(this.stepButton);
 	}
 
 	private void initBoard(int size) {
@@ -186,7 +192,9 @@ public class SmartGUI extends JPanel {
 	private class FastPlay implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			timer.start();
 			bestFirstSearch();
+			timer.stop();
 		}
 	}
 
