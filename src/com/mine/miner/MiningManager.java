@@ -23,7 +23,7 @@ public class MiningManager {
     
     //Game Functions
     public boolean isOnPit(Quarry quarry, Miner miner){
-    	if (quarry.getPitPos().getX() == miner.getX() && quarry.getPitPos().getY() == miner.getY()) //miner's X & Y position == pit position in quarry
+    	if (quarry.getPiece(miner.getX(), miner.getY()) instanceof Pit)
     		return true;
     	return false;
     }
