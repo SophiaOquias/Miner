@@ -61,6 +61,7 @@ public class SmartGUI extends JPanel {
 
 		// adds ActionListeners to buttons
 		this.playButton.addActionListener(new FastPlay());
+		this.stepButton.addActionListener(new OneStep());
 
 		// adds buttons to panel
 		this.add(this.playButton);
@@ -106,10 +107,14 @@ public class SmartGUI extends JPanel {
 	public void bestFirstSearch() {
 
 		// will have to change while to if statement if using javax.swing.Timer
-		while(!this.nodeList.isEmpty() && !this.manager.isOnPotOfGold(this.quarry, this.miner)) {
+		if(!this.nodeList.isEmpty() && !this.manager.isOnPotOfGold(this.quarry, this.miner)) {
+			this.timer.start();
 			this.miner = nodeList.peek();
 			this.exploredNodes.add(nodeList.pop());
 			this.expand();
+		}
+		else {
+			this.timer.stop();
 		}
 	}
 
@@ -122,6 +127,7 @@ public class SmartGUI extends JPanel {
 		copy(moveMiner, miner);
 		copy(rotateMiner, miner);
 
+		// performs move only if miner is not facing edge 
 		if(!manager.isMinerFacingEdge(quarry, miner)) {
 			moveMiner.move();
 			moveMiner.setHeuristicValue(moveMiner.scan(quarry));
@@ -195,6 +201,17 @@ public class SmartGUI extends JPanel {
 			timer.start();
 			bestFirstSearch();
 			timer.stop();
+		}
+	}
+
+	private class OneStep implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			while(!nodeList.isEmpty() && !manager.isOnPotOfGold(quarry, miner)) {
+				miner = nodeList.peek();
+				exploredNodes.add(nodeList.pop());
+				expand();
+			}
 		}
 	}
 
