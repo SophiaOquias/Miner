@@ -41,7 +41,7 @@ public class Miner {
     public char scan(Quarry quarry){
 
         if(this.front == NORTH) {
-            for(int i = this.x; i <= 0; i--) {
+            for(int i = this.x; i >= 0; i--) {
                 Piece scannedPiece = quarry.getPiece(i, this.y);
                 if(scannedPiece instanceof Beacon) return 'B';
                 else if(scannedPiece instanceof PotOfGold) return 'G';
@@ -68,7 +68,7 @@ public class Miner {
         }
 
         if(this.front == WEST) {
-            for(int i = this.y; i <= 0; i--) {
+            for(int i = this.y; i >= 0; i--) {
                 Piece scannedPiece = quarry.getPiece(this.x, i);
                 if(scannedPiece instanceof Beacon) return 'B';
                 else if(scannedPiece instanceof PotOfGold) return 'G';
@@ -106,7 +106,7 @@ public class Miner {
         switch(resultScan) {
             case 'P' : this.heuristicValue = -1; break; 
             case 'N' : this.heuristicValue = 0; break; 
-            case 'B' : this.heuristicValue = 1; break;
+            case 'B' : this.heuristicValue = 0; break;
             case 'G' : this.heuristicValue = 2; break;
         }
     }
