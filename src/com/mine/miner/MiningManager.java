@@ -29,8 +29,9 @@ public class MiningManager {
     }
 
     public boolean isOnPotOfGold(Quarry quarry, Miner miner){
-    	if (quarry.getGoldPos().getX() == miner.getX() && quarry.getPitPos().getY() == miner.getY()) 
-    		return true;
+    	if(quarry.getPiece(miner.getX(), miner.getY()) instanceof PotOfGold)
+    	    return true; 
+
         return false;
     }
 
