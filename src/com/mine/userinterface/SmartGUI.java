@@ -45,7 +45,7 @@ public class SmartGUI extends JPanel {
 	@SuppressWarnings("unused")
 	public boolean isInList(ArrayList<Miner> nodeList, Miner node) {
 		for(int i = 0; i < nodeList.size(); i++) {
-		    if(minerCompare(nodeList.get(i), node));
+		    if(minerCompare(nodeList.get(i), node))
 		        return true; 
 		}
 		
@@ -60,46 +60,44 @@ public class SmartGUI extends JPanel {
 		exploredNodes.add(new Miner());
 
 		while(!nodeList.isEmpty() && !manager.isOnPotOfGold(quarry, miner)) {
-			exploredNodes.add(nodeList.pop()); 
-			
+			exploredNodes.add(nodeList.pop());
+
+			Miner[] tempList = new Miner[2];
 			for(int i = 0; i < 2; i++) {
-				Miner[] tempList = new Miner[2];
-				
+
 				// adding possible actions to tempList 
-				if(i == 0) { // move action 
-				    tempList[i] = new Miner();
-				    if(!(manager.isMinerFacingEdge(quarry, miner))) {
-				        tempList[i].move();
-                        tempList[i].setHeuristicValue(tempList[i].scan(quarry));
-				    }
-				    else {
-                        tempList[i] = null; 
-				    }
+				if (i == 0) { // move action
+					tempList[i] = new Miner();
+					if (!(manager.isMinerFacingEdge(quarry, miner))) {
+						tempList[i].move();
+						tempList[i].setHeuristicValue(tempList[i].scan(quarry));
+					} else {
+						tempList[i] = null;
+					}
+				} else { //rotate action
+					tempList[i] = new Miner();
+					tempList[i].rotate();
+					tempList[i].setHeuristicValue(tempList[i].scan(quarry));
 				}
-				else { //rotate action
-				    tempList[i] = new Miner();
-				    tempList[i].rotate();
-				    tempList[i].setHeuristicValue(tempList[i].scan(quarry));
-				}
-				
-				// adding nodes to stack based on greater h(n) value 
-				if(isInList(exploredNodes, tempList[0]) || tempList[0] == null) {
-				    nodeList.push(tempList[1]); 							
-				}
-				else if(isInList(exploredNodes, tempList[1])) {
-				    nodeList.push(tempList[0]);
-				}
-				//check if moveNode's h(n) >= rotateNode's h(n)
-				else if(tempList[0].getHeuristicValue() >= tempList[1].getHeuristicValue()) {
-					nodeList.push(tempList[1]); // push rotate node
-					nodeList.push(tempList[0]); // push move node
-				}
-				else {
-					nodeList.push(tempList[0]); // push move node
-					nodeList.push(tempList[1]); // push rotate node
-				}
-				
 			}
+
+			// adding nodes to stack based on greater h(n) value
+			if(isInList(exploredNodes, tempList[0]) || tempList[0] == null) {
+				nodeList.push(tempList[1]);
+			}
+			else if(isInList(exploredNodes, tempList[1])) {
+				nodeList.push(tempList[0]);
+			}
+			//check if moveNode's h(n) >= rotateNode's h(n)
+			else if(tempList[0].getHeuristicValue() >= tempList[1].getHeuristicValue()) {
+				nodeList.push(tempList[1]); // push rotate node
+				nodeList.push(tempList[0]); // push move node
+			}
+			else {
+				nodeList.push(tempList[0]); // push move node
+				nodeList.push(tempList[1]); // push rotate node
+			}
+
 		}
 	}
 
