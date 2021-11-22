@@ -110,6 +110,7 @@ public class SmartGUI extends JPanel {
 		if(!this.nodeList.isEmpty() && !this.manager.isOnPotOfGold(this.quarry, this.miner)) {
 			this.timer.start();
 			this.miner = nodeList.peek();
+			repaint();
 			this.exploredNodes.add(nodeList.pop());
 			this.expand();
 		}
@@ -191,23 +192,21 @@ public class SmartGUI extends JPanel {
 		// draw miner
 		g.drawImage(this.images[miner.getFront()],
 				miner.getY() * IMG_SIZE,
-				OFFSET + miner.getX() * IMG_SIZE,
+				miner.getX() * IMG_SIZE + OFFSET,
 				this);
 	}
 
 	private class FastPlay implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			timer.start();
 			bestFirstSearch();
-			timer.stop();
 		}
 	}
 
 	private class OneStep implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			while(!nodeList.isEmpty() && !manager.isOnPotOfGold(quarry, miner)) {
+			if(!nodeList.isEmpty() && !manager.isOnPotOfGold(quarry, miner)) {
 				miner = nodeList.peek();
 				exploredNodes.add(nodeList.pop());
 				expand();
