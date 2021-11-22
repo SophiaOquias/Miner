@@ -16,22 +16,28 @@ public class SmartGUI extends JPanel {
 	private Miner miner;
 	private MiningManager manager;
 	private Image[] images;
+	private Stack<Miner> nodeList;
+	private ArrayList<Miner> exploredNodes;
 	
 	//Constants
 	private final int IMG_SIZE = 30;
 	private final int OFFSET = 50;
 	
 	//Image constants
-	private final int NUM_IMG = 5;
-	private final int MINER = 1;
-	private final int BEACON = 2;
-	private final int PIT = 3;
-	private final int GOLD = 4;
-	private final int STONE = 5;
+	private final int NUM_IMG = 8;
+	private final int STONE = 0;
+	// 1 - 4 is reserved for MINER
+	private final int BEACON = 5;
+	private final int PIT = 6;
+	private final int GOLD = 7;
 	
 	public SmartGUI(int size) {
 		this.quarry = new Quarry(size);
+		this.miner = new Miner();
 		this.manager = new MiningManager(quarry, miner);
+		this.nodeList = new Stack<>();
+		this.nodeList.push(this.miner);
+		this.exploredNodes = new ArrayList<>();
 	}
 	
 	public boolean minerCompare(Miner m1, Miner m2) {
@@ -41,8 +47,7 @@ public class SmartGUI extends JPanel {
 	        return true;
 	   return false;
 	}
-	
-	@SuppressWarnings("unused")
+
 	public boolean isInList(ArrayList<Miner> nodeList, Miner node) {
 		for(int i = 0; i < nodeList.size(); i++) {
 		    if(minerCompare(nodeList.get(i), node))
@@ -52,53 +57,58 @@ public class SmartGUI extends JPanel {
 		return false; 
     }
 	
-	public void smartAlgorithm() {
-		Stack<Miner> nodeList = new Stack<>();
-		ArrayList<Miner> exploredNodes = new ArrayList<>();
-		
+	public void bestFirstSearch() {
 
-		exploredNodes.add(new Miner());
-
-		while(!nodeList.isEmpty() && !manager.isOnPotOfGold(quarry, miner)) {
-			exploredNodes.add(nodeList.pop());
-
-			Miner[] tempList = new Miner[2];
-			for(int i = 0; i < 2; i++) {
-
-				// adding possible actions to tempList 
-				if (i == 0) { // move action
-					tempList[i] = new Miner();
-					if (!(manager.isMinerFacingEdge(quarry, miner))) {
-						tempList[i].move();
-						tempList[i].setHeuristicValue(tempList[i].scan(quarry));
-					} else {
-						tempList[i] = null;
-					}
-				} else { //rotate action
-					tempList[i] = new Miner();
-					tempList[i].rotate();
-					tempList[i].setHeuristicValue(tempList[i].scan(quarry));
-				}
-			}
-
-			// adding nodes to stack based on greater h(n) value
-			if(isInList(exploredNodes, tempList[0]) || tempList[0] == null) {
-				nodeList.push(tempList[1]);
-			}
-			else if(isInList(exploredNodes, tempList[1])) {
-				nodeList.push(tempList[0]);
-			}
-			//check if moveNode's h(n) >= rotateNode's h(n)
-			else if(tempList[0].getHeuristicValue() >= tempList[1].getHeuristicValue()) {
-				nodeList.push(tempList[1]); // push rotate node
-				nodeList.push(tempList[0]); // push move node
-			}
-			else {
-				nodeList.push(tempList[0]); // push move node
-				nodeList.push(tempList[1]); // push rotate node
-			}
-
+		// will have to change while to if statement if using javax.swing.Timer
+		while(!this.nodeList.isEmpty() && !this.manager.isOnPotOfGold(this.quarry, this.miner)) {
+			this.miner = nodeList.peek();
+			this.exploredNodes.add(nodeList.pop());
+			this.expand();
 		}
+	}
+
+	private void expand() {
+		// instantiating new miner nodes
+		Miner moveMiner = new Miner();
+		Miner rotateMiner = new Miner();
+
+		// copy information of current state of miner
+		copy(moveMiner, miner);
+		copy(rotateMiner, miner);
+
+		if(!manager.isMinerFacingEdge(quarry, miner)) {
+			moveMiner.move();
+			moveMiner.setHeuristicValue(moveMiner.scan(quarry));
+		}
+
+		rotateMiner.rotate();
+		rotateMiner.setHeuristicValue(rotateMiner.scan(quarry));
+
+		// pushes only rotateMiner if miner is facing edge (OOB) or node has already been explored
+		if(manager.isMinerFacingEdge(quarry, miner) || isInList(exploredNodes, moveMiner)) {
+			nodeList.push(rotateMiner);
+		}
+		// pushes only moveMiner if node has already been explored
+		else if(isInList(exploredNodes, rotateMiner)) {
+			nodeList.push(moveMiner);
+		}
+		// check if moveNode's h(n) >= rotateNode's h(n)
+		// whichever is pushed last becomes top of stack
+		else if(moveMiner.getHeuristicValue() >= rotateMiner.getHeuristicValue()) {
+			nodeList.push(rotateMiner); // push rotate node
+			nodeList.push(moveMiner); // push move node
+		}
+		else {
+			nodeList.push(moveMiner); // push move node
+			nodeList.push(rotateMiner); // push rotate node
+		}
+	}
+
+	// copies position and orientation of m2 to m1
+	private void copy(Miner m1, Miner m2) {
+		m1.setX(m2.getX());
+		m1.setY(m2.getY());
+		m1.setFront(m2.getFront());
 	}
 
 }
