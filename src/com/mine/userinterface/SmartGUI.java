@@ -138,11 +138,12 @@ public class SmartGUI extends JPanel {
 		rotateMiner.setHeuristicValue(rotateMiner.scan(quarry));
 
 		// pushes only rotateMiner if miner is facing edge (OOB) or node has already been explored
-		if(manager.isMinerFacingEdge(quarry, miner) || isInList(exploredNodes, moveMiner)) {
+		if(manager.isMinerFacingEdge(quarry, miner) ||
+				isInList(exploredNodes, moveMiner) && !isInList(exploredNodes, rotateMiner)) {
 			nodeList.push(rotateMiner);
 		}
 		// pushes only moveMiner if node has already been explored
-		else if(isInList(exploredNodes, rotateMiner)) {
+		else if(isInList(exploredNodes, rotateMiner) && !isInList(exploredNodes, rotateMiner)) {
 			nodeList.push(moveMiner);
 		}
 		// check if moveNode's h(n) >= rotateNode's h(n)
