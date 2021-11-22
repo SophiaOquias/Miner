@@ -47,8 +47,8 @@ public class SmartGUI extends JPanel {
 		// sets size of panel
 		this.setPreferredSize(
 				new Dimension(
-						quarry.getSize() * IMG_SIZE,
-						quarry.getSize() * IMG_SIZE + OFFSET
+						size * IMG_SIZE,
+						size * IMG_SIZE + OFFSET
 				)
 		);
 
