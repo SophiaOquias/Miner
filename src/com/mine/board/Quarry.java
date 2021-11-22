@@ -4,8 +4,9 @@ import java.util.Random;
 import com.mine.miner.Miner;
 import com.mine.pieces.Piece;
 import com.mine.pieces.Position;
+import com.mine.pieces.Stone;
 
-public class Quarry {
+ public class Quarry {
 	
 	private int size;
 	private Piece[][] mine;
@@ -17,6 +18,12 @@ public class Quarry {
 	public Quarry(int size) {
 		this.size = size;
 		this.mine = new Piece[size][size]; //mine property gets input sizes
+
+		for(int i = 0; i < size; i++) {
+			for(int j = 0; j < size; j++) {
+				this.mine[i][j] = new Stone(new Position(i, j));
+			}
+		}
 	}
 	
 	//Spawn Functions
