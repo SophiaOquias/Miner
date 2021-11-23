@@ -17,6 +17,7 @@ public class SmartGUI {
     private JSlider slider;
     private JButton okayButton;
     private JLabel sizeLabel;
+    private JLabel statusbar;
     private int size;
 
     public void createSliderFrame() {
@@ -57,14 +58,20 @@ public class SmartGUI {
     }
 
     public void createSmartFrame() {
+        // initializing swing components
         this.smartFrame = new JFrame();
-        JScrollPane scrollPane = new JScrollPane(new SmartMiner(this.size));
+        this.statusbar = new JLabel("");
+        JScrollPane scrollPane = new JScrollPane(new SmartMiner(this.size, this.statusbar));
 
+        // Scroll pane (scroll bar) settings
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        // scroll speed settings
         scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
+        // JFrame settings
+        // sets frame size
         if (this.size <= 20) {
             this.smartFrame.setSize(new Dimension(
                     (size + 2) * 30,
@@ -73,8 +80,8 @@ public class SmartGUI {
         } else {
             this.smartFrame.setSize(600, 650);
         }
-
         this.smartFrame.add(scrollPane);
+        this.smartFrame.add(this.statusbar, BorderLayout.SOUTH);
         this.smartFrame.setTitle("Smart Rational Level Miner");
         this.smartFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.smartFrame.setLocationRelativeTo(null); // makes window open on center

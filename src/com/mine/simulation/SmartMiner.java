@@ -26,6 +26,7 @@ public class SmartMiner extends JPanel {
 	private Timer timer;
 	private JButton playButton;
 	private JButton stepButton;
+	private JLabel statusbar;
 	
 	//Constants
 	private final int IMG_SIZE = 30;
@@ -40,9 +41,11 @@ public class SmartMiner extends JPanel {
 	private final int PIT = 6;
 	private final int GOLD = 7;
 	
-	public SmartMiner(int size) {
+	public SmartMiner(int size, JLabel statusbar) {
 		this.initBoard(size);
 		this.loadImages();
+
+		this.statusbar = statusbar;
 
 		// sets size of panel
 		this.setPreferredSize(
@@ -52,7 +55,10 @@ public class SmartMiner extends JPanel {
 				)
 		);
 
-		// initializes timer
+		// initializes statusbar
+		this.statusbar.setText("Moves: \t Rotates: \t Scans: ");
+
+		// initializes timer (responsible for animation of miner)
 		this.timer = new Timer(DELAY, new FastPlay());
 
 		// initializes buttons
@@ -210,6 +216,7 @@ public class SmartMiner extends JPanel {
 			if(!nodeList.isEmpty() && !manager.isOnPotOfGold(quarry, miner)) {
 				miner = nodeList.peek();
 				exploredNodes.add(nodeList.pop());
+				repaint();
 				expand();
 			}
 		}
