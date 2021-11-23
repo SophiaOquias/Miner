@@ -3,28 +3,23 @@ package com.mine.pieces;
 import com.mine.board.*;
 
 public class Beacon extends Piece {
-
-    // Properties
-
-    private int squaresToGold;
-
     // Constructor
 
-    public Beacon(PotOfGold gold, Quarry quarry, Position position) {
-        this.calculateSquaresToGold(gold, quarry);
+    public Beacon(Position position) {
         this.pos = position;
     }
 
     // Methods
 
-    private void calculateSquaresToGold(PotOfGold gold, Quarry quarry) {
+    private int calculateSquaresToGold(PotOfGold gold, Quarry quarry) {
 
         boolean isPitFound = false;
         int goldX = gold.pos.getX();
         int goldY = gold.pos.getY();
         int beaconX = this.pos.getX();
         int beaconY = this.pos.getY();
-
+        int squaresToGold;
+        
         // CHECK FOR PITS
         // check if pot of gold is in the same row
         if(goldX == beaconX) {
@@ -63,15 +58,17 @@ public class Beacon extends Piece {
         }
 
         // CALCULATION
-        this.squaresToGold = Math.abs(goldX - beaconX) + Math.abs(goldY - beaconY);
+        squaresToGold = Math.abs(goldX - beaconX) + Math.abs(goldY - beaconY);
 
         if(isPitFound)
-            this.squaresToGold += 3;
-
+            squaresToGold += 3;
+        
+        return squaresToGold;
     }
     
-    public int getSquaresToGold() {
-    	return this.squaresToGold;
+    public int getSquaresToGold(PotOfGold gold, Quarry quarry) {
+    	
+    	return calculateSquaresToGold(gold, quarry);
     }
 
 }

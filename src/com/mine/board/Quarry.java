@@ -3,31 +3,61 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.mine.miner.Miner;
+import com.mine.pieces.Beacon;
 import com.mine.pieces.Piece;
+import com.mine.pieces.Pit;
 import com.mine.pieces.Position;
+import com.mine.pieces.PotOfGold;
 import com.mine.pieces.Stone;
+import com.mine.userinterface.UserInterface;
 
  public class Quarry {
 	
 	private int size;
 	private Piece[][] mine;
-	private ArrayList<Position> PitPosList;
-	private Position GoldPos;
-	private ArrayList<Position> BeaconPosList;
-	private ArrayList<Position> InvalidPoints;
+	private ArrayList<Position> PitPosList = new ArrayList<Position>();
+	private Position GoldPos = new Position(1, 1);
+	private ArrayList<Position> BeaconPosList = new ArrayList<Position>();
+	private ArrayList<Position> InvalidPoints = new ArrayList<Position>();
+	
+	private final int MAX_BEACONS;
+	private final int MAX_PITS;
 	
 	//Constructor
 	public Quarry(int size) {
 		this.size = size;
 		this.mine = new Piece[size][size]; //mine property gets input sizes
-
+		
+		MAX_BEACONS  = (int) Math.ceil(size * 0.1);
+		MAX_PITS = (int) Math.ceil(size * 0.8);
+		
 		InvalidPoints.add(new Position (0, 0)); //Position of Miner
 		
-		for(int i = 0; i < size; i++) {
-			for(int j = 0; j < size; j++) {
+		System.out.println("Filling quarry with Stone...");
+		for(int i = 0; i < size; i++)
+			for(int j = 0; j < size; j++)
 				this.mine[i][j] = new Stone(new Position(i, j));
-			}
+		
+		System.out.println("Spawning Gold...");
+		spawnPotOfGold();
+		System.out.println("Importing Gold...");
+		mine[GoldPos.getX()][GoldPos.getY()] = new PotOfGold(GoldPos);
+		
+		System.out.println("Spawning Beacons...");
+		spawnAllBeacons();
+		System.out.println("Importing Beacons... n = " + BeaconPosList.size());
+		for(int i = 0; i < BeaconPosList.size(); i++) {
+			mine[BeaconPosList.get(i).getX()][BeaconPosList.get(i).getY()] = new Beacon(BeaconPosList.get(i));
+			System.out.printf("x = %d, y = %d\n", BeaconPosList.get(i).getX(), BeaconPosList.get(i).getY());
 		}
+		
+		System.out.println("Spawning Pits...");
+		spawnAllPits();
+		System.out.println("Importing Pits...");
+		for(int i = 0; i < PitPosList.size(); i++) {
+			mine[PitPosList.get(i).getX()][PitPosList.get(i).getY()] = new Pit(PitPosList.get(i));
+			System.out.printf("x = %d, y = %d\n", PitPosList.get(i).getX(), PitPosList.get(i).getY());
+		}		
 	}
 	
 	private boolean isOutofBounds(Position pos) { 
@@ -38,15 +68,15 @@ import com.mine.pieces.Stone;
 	}
 	
 	private void getInvalidPoints() {
-		if(!this.getGoldPos().equals(null) || !InvalidPoints.contains(this.getGoldPos())) {
+		if(!this.getGoldPos().equals(null) && !InvalidPoints.contains(this.getGoldPos())) {
 			InvalidPoints.add(this.getGoldPos());
 		}
-		else if(!BeaconPosList.isEmpty()) {
-			InvalidPoints.addAll(BeaconPosList);
+		else if(!BeaconPosList.isEmpty() && BeaconPosList.size() < MAX_BEACONS) {
+			InvalidPoints.add(BeaconPosList.get(BeaconPosList.size() - 1));
 		}
 		else if (PitPosList.isEmpty()){ //Will only be called once.
 			//This adds the points around the gold because Pits cant spawn a block near it.
-			for(int i = 0; i < 8; i++) {
+			for(int i = 0; i < 8; i++) { 
 				Position invalidPos = new Position(0, 0); //It should never add (0, 0) to the position. This is for java to not bitch around with variable initialization.
 				
 				if(i == 0) invalidPos = new Position(GoldPos.getX(), GoldPos.getY() + 1); //North of Gold Pos
@@ -62,8 +92,8 @@ import com.mine.pieces.Stone;
 				if(!isOutofBounds(invalidPos) && !InvalidPoints.contains(invalidPos)) InvalidPoints.add(invalidPos);
 			}
 		}
-		else {
-			Position PitPosToAdd = PitPosList.get(this.getSize() - 1);
+		else if (!PitPosList.isEmpty()){
+			Position PitPosToAdd = PitPosList.get(PitPosList.size() - 1);
 			
 			InvalidPoints.add(PitPosToAdd); //Adds the last element in the Pit List
 			
@@ -100,61 +130,37 @@ import com.mine.pieces.Stone;
 		return PitPos;
 	}
 	//Spawn Functions ***CHECK FORMULA FOR HOW MANY TO SPAWN***
-    public void spawnAllPits(int quarrySize){ //Random spawning. No 2 blocks near pot of gold. and not beside each other
-    	
+    public void spawnAllPits(){ //Random spawning. No 2 blocks near pot of gold. and not beside each other
+    	for(int i = 0; i < MAX_PITS; i++)
+    		PitPosList.add(spawnOnePit());
     }
     
-    public void spawnBeacon(){ //Random spawning.
-    	int x, y;
+    private Position spawnOneBeacon() {
     	Random rand = new Random();
-    	int invalidXPoint = this.getPitPos().getX();
-    	int invalidYPoint = this.getPitPos().getY();
+    	Position BeaconPos = new Position(0, 0);
+    	
+    	getInvalidPoints();
     	
     	do {
-    		do{
-        		x = rand.nextInt(this.getSize());
-        	}while(x == invalidXPoint);
-        	
-        	do{
-        		y = rand.nextInt(this.getSize());
-        	}while(y == invalidYPoint); //Beacon cant spawn adjacent to 
-    	}while(x == 0 && y == 0); //This ensures beacon does not spawn on miner
+    		BeaconPos.setX(rand.nextInt(size));
+    		BeaconPos.setY(rand.nextInt(size));
+    	}while(InvalidPoints.contains(BeaconPos));
     	
-    	
-    	quarry.setBeaconPos(new Position(x, y));
+    	return BeaconPos;
     }
     
-    private boolean spawnPotOfGoldVertically() { //Random spawning. No Pits 2 blocks near it.
-    	Random rand = new Random();
-    	
-    	int val = rand.nextInt(1);  
-    	
-    	if (val == 1) return true;
-    	else return false;
+    public void spawnAllBeacons(){ //Random spawning.
+    	for(int i = 0; i < MAX_BEACONS; i++)
+    		BeaconPosList.add(spawnOneBeacon());
     }
     
-    public void spawnPotOfGold(Quarry quarry){ //Random spawning. No Pits 2 blocks near it.
-    	int x, y;
+    public void spawnPotOfGold(){ //Random spawning. No Pits 2 blocks near it.
     	Random rand = new Random();
-    	int validXPoint = this.getBeaconPos().getX();
-    	int validYPoint = this.getBeaconPos().getY();
     	
-    	if(this.spawnPotOfGoldVertically()) {
-    		y = validYPoint;
-    		
-    		do {
-    			x = rand.nextInt(this.getSize());
-    		}while(x == validXPoint);
-    	}
-    	else {
-    		x = validXPoint;
-    		
-    		do {
-    			y = rand.nextInt(this.getSize());
-    		}while(y == validYPoint);
-    	}
-    	
-    	quarry.setGoldPos(new Position(x, y));
+    	do {
+    		GoldPos.setX(rand.nextInt(size));
+    		GoldPos.setY(rand.nextInt(size));
+    	}while(InvalidPoints.contains(GoldPos));
     }
 
     public void spawnMiner(Miner miner){
@@ -192,5 +198,13 @@ import com.mine.pieces.Stone;
 
 	public void setGoldPos(Position goldPos) {
 		this.GoldPos = goldPos;
+	}
+	
+	public static void main(String[] args) {
+		Quarry quarry = new Quarry(64);
+		UserInterface ui = new UserInterface();
+		Miner miner = new Miner();
+		
+		ui.displayQuarry(quarry, miner);
 	}
 }
