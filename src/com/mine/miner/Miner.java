@@ -12,7 +12,10 @@ public class Miner {
     private int front;
     private int x;
     private int y;
-    private int heuristicValue; 
+    private int heuristicValue;
+    private int moves = 0;
+    private int scans = 0;
+    private int rotates = 0;
 
     // Define Constants
     public final int NORTH = 1;
@@ -115,5 +118,14 @@ public class Miner {
     public int getY() { return this.y; }
     public void setX(int x) { this.x = x; }
     public void setY(int y) { this.y = y; }
+    public void incrementMoves() { this.moves++; }
+    public void incrementRotates() { this.rotates++; }
+    public void incrementScans() { this.scans++; }
+    public int getMoves() { return this.moves; }
+    public int getScans() { return this.scans; }
+    public int getRotates() { return this.rotates; }
+    public void setMoves(int moves) { this.moves = moves; }
+    public void setRotates(int rotates) { this.rotates = rotates; }
+    public void setScans(int scans) { this.scans = scans; }
 
 }

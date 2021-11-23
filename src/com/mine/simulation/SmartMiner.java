@@ -137,11 +137,15 @@ public class SmartMiner extends JPanel {
 		// performs move only if miner is not facing edge 
 		if(!manager.isMinerFacingEdge(quarry, miner)) {
 			moveMiner.move();
+			moveMiner.incrementMoves();
 			moveMiner.setHeuristicValue(moveMiner.scan(quarry));
+			moveMiner.incrementScans();
 		}
 
 		rotateMiner.rotate();
+		rotateMiner.incrementRotates();
 		rotateMiner.setHeuristicValue(rotateMiner.scan(quarry));
+		moveMiner.incrementScans();
 
 		// pushes only rotateMiner if miner is facing edge (OOB) or node has already been explored
 		if(manager.isMinerFacingEdge(quarry, miner) ||
@@ -169,6 +173,9 @@ public class SmartMiner extends JPanel {
 		m1.setX(m2.getX());
 		m1.setY(m2.getY());
 		m1.setFront(m2.getFront());
+		m1.setMoves(m2.getMoves());
+		m1.setRotates(m2.getRotates());
+		m1.setScans(m2.getScans());
 	}
 
 	@Override
@@ -207,6 +214,9 @@ public class SmartMiner extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			bestFirstSearch();
+			statusbar.setText("Moves: " + miner.getMoves() +
+					" Rotates: " +  miner.getRotates() +
+					" Scans: " + miner.getScans());
 		}
 	}
 
