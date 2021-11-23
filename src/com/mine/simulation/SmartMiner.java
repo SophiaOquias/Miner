@@ -111,18 +111,9 @@ public class SmartMiner extends JPanel {
     }
 	
 	public void bestFirstSearch() {
-
-		// will have to change while to if statement if using javax.swing.Timer
-		if(!this.nodeList.isEmpty() && !this.manager.isOnPotOfGold(this.quarry, this.miner)) {
-			this.timer.start();
-			this.miner = nodeList.peek();
-			repaint();
-			this.exploredNodes.add(nodeList.pop());
-			this.expand();
-		}
-		else {
-			this.timer.stop();
-		}
+		this.miner = nodeList.peek();
+		this.exploredNodes.add(nodeList.pop());
+		this.expand();
 	}
 
 	private void expand() {
@@ -178,6 +169,12 @@ public class SmartMiner extends JPanel {
 		m1.setScans(m2.getScans());
 	}
 
+	private void updateStatusbar() {
+		statusbar.setText("Moves: " + miner.getMoves() +
+				"    Rotates: " +  miner.getRotates() +
+				"    Scans: " + miner.getScans());
+	}
+
 	@Override
 	public void paintComponent(Graphics g) {
 
@@ -213,10 +210,15 @@ public class SmartMiner extends JPanel {
 	private class FastPlay implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			bestFirstSearch();
-			statusbar.setText("Moves: " + miner.getMoves() +
-					" Rotates: " +  miner.getRotates() +
-					" Scans: " + miner.getScans());
+			if(!nodeList.isEmpty() && !manager.isOnPotOfGold(quarry, miner)) {
+				timer.start();
+				bestFirstSearch();
+				repaint();
+				updateStatusbar();
+			}
+			else {
+				timer.stop();
+			}
 		}
 	}
 
@@ -224,10 +226,9 @@ public class SmartMiner extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(!nodeList.isEmpty() && !manager.isOnPotOfGold(quarry, miner)) {
-				miner = nodeList.peek();
-				exploredNodes.add(nodeList.pop());
+				bestFirstSearch();
 				repaint();
-				expand();
+				updateStatusbar();
 			}
 		}
 	}
