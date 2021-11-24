@@ -149,10 +149,7 @@ public class RandomMiner extends JPanel{
 		else if(isInList(exploredNodes, rotateMiner) && !isInList(exploredNodes, rotateMiner)) {
 			nodeList.push(moveMiner);
 		}
-		else {
-			nodeList.push(moveMiner); // push move node
-			nodeList.push(rotateMiner); // push rotate node
-		}
+		
 	}
 
 	// copies position and orientation of m2 to m1
