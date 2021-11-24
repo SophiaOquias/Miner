@@ -79,7 +79,11 @@ public class RandomGUI extends JPanel{
                     g.drawImage(this.images[PIT], x, y, this);
                 else if(currentPiece instanceof Beacon) {
                     g.drawImage(this.images[BEACON], x, y, this);
-                    int num = ((Beacon) currentPiece).getSquaresToGold();
+                    int num = ((Beacon) currentPiece).
+                            getSquaresToGold((PotOfGold) quarry.getPiece(
+                                    quarry.getGoldPos().getX(),
+                                    quarry.getGoldPos().getY()),
+                                    quarry);
                     g.drawString("" + num, 2 * IMG_SIZE + 10 , 2 * IMG_SIZE + 45);
                 }
                 else if(currentPiece instanceof PotOfGold)

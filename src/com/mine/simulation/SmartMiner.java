@@ -55,6 +55,8 @@ public class SmartMiner extends JPanel {
 				)
 		);
 
+		this.setBackground(Color.DARK_GRAY);
+
 		// initializes statusbar
 		this.statusbar.setText("Moves: \t Rotates: \t Scans: ");
 
@@ -192,7 +194,11 @@ public class SmartMiner extends JPanel {
 					g.drawImage(this.images[PIT], x, y, this);
 				else if(currentPiece instanceof Beacon) {
 					g.drawImage(this.images[BEACON], x, y, this);
-					int num = ((Beacon) currentPiece).getSquaresToGold();
+					int num = ((Beacon) currentPiece).
+							getSquaresToGold((PotOfGold) quarry.getPiece(
+									quarry.getGoldPos().getX(),
+									quarry.getGoldPos().getY()),
+									quarry);
 					g.drawString("" + num, x + 10, y + 25);
 				}
 				else if(currentPiece instanceof PotOfGold)
