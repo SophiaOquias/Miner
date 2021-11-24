@@ -133,7 +133,7 @@ public class RandomMiner extends JPanel{
 			moveMiner.move();
 			moveMiner.incrementMoves();
 		}
-		
+
 		rotateMiner.rotate();
 		rotateMiner.incrementRotates();
 
