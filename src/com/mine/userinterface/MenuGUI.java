@@ -83,7 +83,7 @@ public class MenuGUI {
         }
         randomFrame.add(scrollPane);
         randomFrame.add(statusbar, BorderLayout.SOUTH);
-        randomFrame.setTitle("Smart Rational Level Miner");
+        randomFrame.setTitle("Random Rational Level Miner");
         randomFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         randomFrame.setLocationRelativeTo(null); // makes window open on center
         randomFrame.setVisible(true);
