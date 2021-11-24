@@ -1,11 +1,11 @@
 package com.mine.simulation;
 
-import com.mine.userinterface.SmartGUI;
+import com.mine.userinterface.MenuGUI;
 
 public class SmartAlgorithm {
 
     public static void main(String[] args) {
-        SmartGUI smart = new SmartGUI();
-        smart.createSliderFrame();
+        MenuGUI menu = new MenuGUI();
+        menu.createSliderFrame();
     }
 }
