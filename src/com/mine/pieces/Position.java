@@ -12,6 +12,19 @@ public class Position {
 		this.y = y;
 	}
 	
+	 @Override
+	    public boolean equals(Object object)
+	    {
+	        boolean sameSame = false;
+
+	        if (object != null && object instanceof Position)
+	        {
+	            sameSame = this.x == ((Position) object).x && this.y == ((Position) object).y ;
+	        }
+
+	        return sameSame;
+	    }
+	
 	//Methods
 	public int getX() {
 		return this.x;

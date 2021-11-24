@@ -42,6 +42,7 @@ import com.mine.userinterface.UserInterface;
 		
 		System.out.println("Spawning Gold...");
 		spawnPotOfGold();
+		System.out.printf("x = %d, y = %d\n", GoldPos.getX(), GoldPos.getY());
 		System.out.println("Importing Gold...");
 		mine[GoldPos.getX()][GoldPos.getY()] = new PotOfGold(GoldPos);
 		
@@ -59,73 +60,46 @@ import com.mine.userinterface.UserInterface;
 		for(int i = 0; i < PitPosList.size(); i++) {
 			mine[PitPosList.get(i).getX()][PitPosList.get(i).getY()] = new Pit(PitPosList.get(i));
 			System.out.printf("x = %d, y = %d\n", PitPosList.get(i).getX(), PitPosList.get(i).getY());
-		}		
+		}
+		
+		System.out.println("List of invalid points...");
+		for(int i = 0; i < InvalidPoints.size(); i++) {
+			System.out.printf(" x = %d, y = %d\n", InvalidPoints.get(i).getX(), InvalidPoints.get(i).getY());
+		}
 	}
 	
-	private boolean isOutofBounds(Position pos) { 
-		if(pos.getX() >= 0 && pos.getX() < this.getSize() || pos.getY() >= 0 && pos.getY() < this.getSize()) {
-			return false;
-		}
-		else return true;
+	//Methods
+	private void addAdjacentPointsToInvalidPoints(Position pos) {
+		InvalidPoints.add(new Position(pos.getX(), pos.getY() + 1));
+		InvalidPoints.add(new Position(pos.getX(), pos.getY() - 1));
+		InvalidPoints.add(new Position(pos.getX() + 1, pos.getY()));
+		InvalidPoints.add(new Position(pos.getX() - 1, pos.getY()));
+		
+		InvalidPoints.add(new Position(pos.getX() + 1, pos.getY() + 1));
+		InvalidPoints.add(new Position(pos.getX() - 1, pos.getY() + 1));
+		InvalidPoints.add(new Position(pos.getX() + 1, pos.getY() - 1));
+		InvalidPoints.add(new Position(pos.getX() - 1, pos.getY() - 1));
 	}
 	
-	private void getInvalidPoints() {
-		if(!this.getGoldPos().equals(null) && !InvalidPoints.contains(this.getGoldPos())) {
-			InvalidPoints.add(this.getGoldPos());
-		}
-		else if(!BeaconPosList.isEmpty() && BeaconPosList.size() < MAX_BEACONS) {
-			InvalidPoints.add(BeaconPosList.get(BeaconPosList.size() - 1));
-		}
-		else if (PitPosList.isEmpty()){ //Will only be called once.
-			//This adds the points around the gold because Pits cant spawn a block near it.
-			for(int i = 0; i < 8; i++) { 
-				Position invalidPos = new Position(0, 0); //It should never add (0, 0) to the position. This is for java to not bitch around with variable initialization.
-				
-				if(i == 0) invalidPos = new Position(GoldPos.getX(), GoldPos.getY() + 1); //North of Gold Pos
-				else if(i == 1) invalidPos = new Position(GoldPos.getX(), GoldPos.getY() - 1); //South of Gold Pos
-				else if(i == 2) invalidPos = new Position(GoldPos.getX() + 1, GoldPos.getY()); //East of Gold Pos
-				else if(i == 3) invalidPos = new Position(GoldPos.getX() + 1, GoldPos.getY()); //West of Gold Pos
-				
-				else if(i == 4) invalidPos = new Position(GoldPos.getX() + 1, GoldPos.getY() + 1); //North East
-				else if(i == 5) invalidPos = new Position(GoldPos.getX() - 1, GoldPos.getY() + 1); //North West
-				else if(i == 6) invalidPos = new Position(GoldPos.getX() - 1, GoldPos.getY() - 1); //South West
-				else if(i == 7) invalidPos = new Position(GoldPos.getX() + 1, GoldPos.getY() - 1); //South East
-				
-				if(!isOutofBounds(invalidPos) && !InvalidPoints.contains(invalidPos)) InvalidPoints.add(invalidPos);
-			}
-		}
-		else if (!PitPosList.isEmpty()){
-			Position PitPosToAdd = PitPosList.get(PitPosList.size() - 1);
-			
-			InvalidPoints.add(PitPosToAdd); //Adds the last element in the Pit List
-			
-			for(int i = 0; i < 8; i++) {
-				Position invalidPos = new Position(0, 0); //It should never add (0, 0) to the position. This is for java to not bitch around with variable initialization.
-				
-				if(i == 0) invalidPos = new Position(PitPosToAdd.getX(), PitPosToAdd.getY() + 1); //North of Gold Pos
-				else if(i == 1) invalidPos = new Position(PitPosToAdd.getX(), PitPosToAdd.getY() - 1); //South of Gold Pos
-				else if(i == 2) invalidPos = new Position(PitPosToAdd.getX() + 1, PitPosToAdd.getY()); //East of Gold Pos
-				else if(i == 3) invalidPos = new Position(PitPosToAdd.getX() + 1, PitPosToAdd.getY()); //West of Gold Pos
-				
-				else if(i == 4) invalidPos = new Position(PitPosToAdd.getX() + 1, PitPosToAdd.getY() + 1); //North East
-				else if(i == 5) invalidPos = new Position(PitPosToAdd.getX() - 1, PitPosToAdd.getY() + 1); //North West
-				else if(i == 6) invalidPos = new Position(PitPosToAdd.getX() - 1, PitPosToAdd.getY() - 1); //South West
-				else if(i == 7) invalidPos = new Position(PitPosToAdd.getX() + 1, PitPosToAdd.getY() - 1); //South East
-				
-				if(!isOutofBounds(invalidPos) && !InvalidPoints.contains(invalidPos)) InvalidPoints.add(invalidPos);
-			}
-		}
+	private boolean isInvalidPoint(Position pos) {
+		boolean isInvalid = false;
+		
+		for(int i = 0; i < InvalidPoints.size(); i++)
+			if (pos.equals(InvalidPoints.get(i))) isInvalid = true;
+		
+		return isInvalid;
 	}
 	
 	private Position spawnOnePit() {
 		Random rand = new Random();
 		Position PitPos;
 		
-		getInvalidPoints(); //When calling this, Invalid Points must have: pos of miner, pos of gold, poslist of all beacons, blocks ad
-		
 		do {
-			PitPos = new Position(rand.nextInt(size - 1), rand.nextInt(size - 1));
-		}while(InvalidPoints.contains(PitPos));
+			PitPos = new Position(rand.nextInt(size), rand.nextInt(size));
+		}while(isInvalidPoint(PitPos));
+		
+		InvalidPoints.add(PitPos);
+		addAdjacentPointsToInvalidPoints(PitPos);
 		
 		return PitPos;
 	}
@@ -139,12 +113,12 @@ import com.mine.userinterface.UserInterface;
     private Position spawnOneBeacon() {
     	Random rand = new Random();
     	Position BeaconPos;
-    	
-    	getInvalidPoints();
-    	
+
     	do {
-    		BeaconPos = new Position(rand.nextInt(size - 1), rand.nextInt(size - 1));
-    	}while(InvalidPoints.contains(BeaconPos));
+    		BeaconPos = new Position(rand.nextInt(size), rand.nextInt(size));
+    	}while(isInvalidPoint(BeaconPos));
+    	
+    	InvalidPoints.add(BeaconPos);
     	
     	return BeaconPos;
     }
@@ -158,18 +132,14 @@ import com.mine.userinterface.UserInterface;
     	Random rand = new Random();
     	
     	do {
-    		GoldPos = new Position(rand.nextInt(size - 1), rand.nextInt(size - 1));
-    	}while(InvalidPoints.contains(GoldPos));
-    }
-
-    public void spawnMiner(Miner miner){
-    	miner.setX(0);
-    	miner.setY(0);
+    		GoldPos = new Position(rand.nextInt(size), rand.nextInt(size));
+    	}while(isInvalidPoint(GoldPos));
+    	
+    	InvalidPoints.add(GoldPos);
+    	addAdjacentPointsToInvalidPoints(GoldPos);
     }
     
-	//Methods
-    
-    //Getters
+    //Getters and Setters
 	public int getSize() {
 		return this.size;
 	}
@@ -200,7 +170,7 @@ import com.mine.userinterface.UserInterface;
 	}
 	
 	public static void main(String[] args) {
-		Quarry quarry = new Quarry(7);
+		Quarry quarry = new Quarry(4);
 		UserInterface ui = new UserInterface();
 		Miner miner = new Miner();
 		
