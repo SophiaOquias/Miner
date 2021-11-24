@@ -16,7 +16,7 @@ import com.mine.userinterface.UserInterface;
 	private int size;
 	private Piece[][] mine;
 	private ArrayList<Position> PitPosList = new ArrayList<Position>();
-	private Position GoldPos = new Position(1, 1);
+	private Position GoldPos;
 	private ArrayList<Position> BeaconPosList = new ArrayList<Position>();
 	private ArrayList<Position> InvalidPoints = new ArrayList<Position>();
 	
@@ -28,8 +28,10 @@ import com.mine.userinterface.UserInterface;
 		this.size = size;
 		this.mine = new Piece[size][size]; //mine property gets input sizes
 		
-		MAX_BEACONS  = (int) Math.ceil(size * 0.1);
-		MAX_PITS = (int) Math.ceil(size * 0.8);
+		if(size * 0.1 >= 10) MAX_BEACONS  = (int) Math.floor(size * 0.1);
+		else MAX_BEACONS = 1;
+		
+		MAX_PITS = (int) Math.floor(size * 0.25);
 		
 		InvalidPoints.add(new Position (0, 0)); //Position of Miner
 		
@@ -53,7 +55,7 @@ import com.mine.userinterface.UserInterface;
 		
 		System.out.println("Spawning Pits...");
 		spawnAllPits();
-		System.out.println("Importing Pits...");
+		System.out.println("Importing Pits... n = " + PitPosList.size());
 		for(int i = 0; i < PitPosList.size(); i++) {
 			mine[PitPosList.get(i).getX()][PitPosList.get(i).getY()] = new Pit(PitPosList.get(i));
 			System.out.printf("x = %d, y = %d\n", PitPosList.get(i).getX(), PitPosList.get(i).getY());
@@ -117,18 +119,17 @@ import com.mine.userinterface.UserInterface;
 	
 	private Position spawnOnePit() {
 		Random rand = new Random();
-		int n = this.getSize();
-		Position PitPos = new Position(0, 0);
+		Position PitPos;
 		
 		getInvalidPoints(); //When calling this, Invalid Points must have: pos of miner, pos of gold, poslist of all beacons, blocks ad
 		
 		do {
-			PitPos.setX(rand.nextInt(n));
-			PitPos.setY(rand.nextInt(n));
+			PitPos = new Position(rand.nextInt(size - 1), rand.nextInt(size - 1));
 		}while(InvalidPoints.contains(PitPos));
 		
 		return PitPos;
 	}
+	
 	//Spawn Functions ***CHECK FORMULA FOR HOW MANY TO SPAWN***
     public void spawnAllPits(){ //Random spawning. No 2 blocks near pot of gold. and not beside each other
     	for(int i = 0; i < MAX_PITS; i++)
@@ -137,13 +138,12 @@ import com.mine.userinterface.UserInterface;
     
     private Position spawnOneBeacon() {
     	Random rand = new Random();
-    	Position BeaconPos = new Position(0, 0);
+    	Position BeaconPos;
     	
     	getInvalidPoints();
     	
     	do {
-    		BeaconPos.setX(rand.nextInt(size));
-    		BeaconPos.setY(rand.nextInt(size));
+    		BeaconPos = new Position(rand.nextInt(size - 1), rand.nextInt(size - 1));
     	}while(InvalidPoints.contains(BeaconPos));
     	
     	return BeaconPos;
@@ -158,8 +158,7 @@ import com.mine.userinterface.UserInterface;
     	Random rand = new Random();
     	
     	do {
-    		GoldPos.setX(rand.nextInt(size));
-    		GoldPos.setY(rand.nextInt(size));
+    		GoldPos = new Position(rand.nextInt(size - 1), rand.nextInt(size - 1));
     	}while(InvalidPoints.contains(GoldPos));
     }
 
@@ -201,7 +200,7 @@ import com.mine.userinterface.UserInterface;
 	}
 	
 	public static void main(String[] args) {
-		Quarry quarry = new Quarry(64);
+		Quarry quarry = new Quarry(7);
 		UserInterface ui = new UserInterface();
 		Miner miner = new Miner();
 		

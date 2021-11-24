@@ -149,12 +149,6 @@ public class RandomMiner extends JPanel{
 		else if(isInList(exploredNodes, rotateMiner) && !isInList(exploredNodes, rotateMiner)) {
 			nodeList.push(moveMiner);
 		}
-		// check if moveNode's h(n) >= rotateNode's h(n)
-		// whichever is pushed last becomes top of stack
-		else if(moveMiner.getHeuristicValue() >= rotateMiner.getHeuristicValue()) {
-			nodeList.push(rotateMiner); // push rotate node
-			nodeList.push(moveMiner); // push move node
-		}
 		else {
 			nodeList.push(moveMiner); // push move node
 			nodeList.push(rotateMiner); // push rotate node

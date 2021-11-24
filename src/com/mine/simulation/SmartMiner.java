@@ -108,7 +108,6 @@ public class SmartMiner extends JPanel {
 		    if(minerCompare(nodeList.get(i), node))
 		        return true; 
 		}
-		
 		return false; 
     }
 	
@@ -238,5 +237,4 @@ public class SmartMiner extends JPanel {
 			}
 		}
 	}
-
 }
