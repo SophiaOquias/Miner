@@ -128,31 +128,30 @@ public class RandomMiner extends JPanel{
 		copy(rotateMiner, miner);
 
 		// performs move only if miner is not facing edge 
-		if(!manager.isMinerFacingEdge(quarry, miner)) {
+		if(!manager.isMinerFacingEdge(quarry, miner) && moveMiner.scan(quarry) != 'P') {
+			moveMiner.incrementScans();
 			moveMiner.move();
 			moveMiner.incrementMoves();
-			moveMiner.setHeuristicValue(moveMiner.scan(quarry));
-			moveMiner.incrementScans();
 		}
 
+		rotateMiner.incrementScans();
 		rotateMiner.rotate();
 		rotateMiner.incrementRotates();
-		rotateMiner.setHeuristicValue(rotateMiner.scan(quarry));
-		moveMiner.incrementScans();
+
 
 		// pushes only rotateMiner if miner is facing edge (OOB) or node has already been explored
-		if(manager.isMinerFacingEdge(quarry, miner) ||
+		if(manager.isMinerFacingEdge(quarry, miner) || moveMiner.scan(quarry) == 'P' ||
 				isInList(exploredNodes, moveMiner) && !isInList(exploredNodes, rotateMiner)) {
 			nodeList.push(rotateMiner);
 		}
 		// pushes only moveMiner if node has already been explored
-		else if(isInList(exploredNodes, rotateMiner) && !isInList(exploredNodes, rotateMiner)) {
+		else if(isInList(exploredNodes, rotateMiner) && !isInList(exploredNodes, moveMiner)) {
+			nodeList.push(moveMiner);
+		} else {
+			nodeList.push(rotateMiner);
 			nodeList.push(moveMiner);
 		}
-		else {
-			nodeList.push(moveMiner); // push move node
-			nodeList.push(rotateMiner); // push rotate node
-		}
+		
 	}
 
 	// copies position and orientation of m2 to m1
