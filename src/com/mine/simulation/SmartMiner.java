@@ -31,7 +31,7 @@ public class SmartMiner extends JPanel {
 	//Constants
 	private final int IMG_SIZE = 30;
 	private final int OFFSET = 50;
-	private final int DELAY = 140;
+	private final int DELAY = 50;
 	
 	//Image constants
 	private final int NUM_IMG = 8;
