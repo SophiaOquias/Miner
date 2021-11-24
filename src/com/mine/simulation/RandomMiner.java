@@ -208,7 +208,7 @@ public class RandomMiner extends JPanel{
 	private class FastPlay implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(!nodeList.isEmpty() && !manager.isOnPotOfGold(quarry, miner)) {
+			if(!nodeList.isEmpty() && !manager.isOnPotOfGold(quarry, miner) && !manager.isOnPit(quarry, miner)) {
 				timer.start();
 				depthFirstSearch();
 				repaint();
@@ -223,7 +223,7 @@ public class RandomMiner extends JPanel{
 	private class OneStep implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(!nodeList.isEmpty() && !manager.isOnPotOfGold(quarry, miner)) {
+			if(!nodeList.isEmpty() && !manager.isOnPotOfGold(quarry, miner) && !manager.isOnPit(quarry, miner)) {
 				depthFirstSearch();
 				repaint();
 				updateStatusbar();

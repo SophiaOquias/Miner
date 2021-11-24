@@ -215,7 +215,7 @@ public class SmartMiner extends JPanel {
 	private class FastPlay implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(!nodeList.isEmpty() && !manager.isOnPotOfGold(quarry, miner)) {
+			if(!nodeList.isEmpty() && !manager.isOnPotOfGold(quarry, miner) && !manager.isOnPit(quarry, miner)) {
 				timer.start();
 				bestFirstSearch();
 				repaint();
@@ -230,7 +230,7 @@ public class SmartMiner extends JPanel {
 	private class OneStep implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(!nodeList.isEmpty() && !manager.isOnPotOfGold(quarry, miner)) {
+			if(!nodeList.isEmpty() && !manager.isOnPotOfGold(quarry, miner) && !manager.isOnPit(quarry, miner)) {
 				bestFirstSearch();
 				repaint();
 				updateStatusbar();
