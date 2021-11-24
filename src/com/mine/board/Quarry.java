@@ -28,8 +28,10 @@ import com.mine.userinterface.UserInterface;
 		this.size = size;
 		this.mine = new Piece[size][size]; //mine property gets input sizes
 		
-		if(size * 0.1 >= 10) MAX_BEACONS  = (int) Math.floor(size * 0.1);
-		else MAX_BEACONS = 1;
+		if(size >= 10)
+			MAX_BEACONS  = (int) Math.floor(size * 0.1);
+		else
+			MAX_BEACONS = 1;
 		
 		MAX_PITS = (int) Math.floor(size * 0.25);
 		
