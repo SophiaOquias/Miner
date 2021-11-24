@@ -128,10 +128,10 @@ public class SmartMiner extends JPanel {
 
 		// performs move only if miner is not facing edge 
 		if(!manager.isMinerFacingEdge(quarry, miner)) {
-			moveMiner.move();
-			moveMiner.incrementMoves();
 			moveMiner.setHeuristicValue(moveMiner.scan(quarry));
 			moveMiner.incrementScans();
+			moveMiner.move();
+			moveMiner.incrementMoves();
 		}
 
 		rotateMiner.rotate();

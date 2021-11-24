@@ -1,5 +1,6 @@
 package com.mine.userinterface;
 
+import com.mine.simulation.RandomMiner;
 import com.mine.simulation.SmartMiner;
 
 import javax.swing.*;
@@ -9,6 +10,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 public class MenuGUI {
 
@@ -42,7 +44,7 @@ public class MenuGUI {
         // button settings
         // randomButton settings
         randomButton.setBounds(160, 105, 125, 30);
-        // still need to add actionListener to randomButton
+        randomButton.addActionListener(new RandomButtonListener());
 
         // smartButton settings
         smartButton.setBounds(290, 105, 125, 30);
@@ -65,7 +67,7 @@ public class MenuGUI {
         // initializing swing components
         JFrame randomFrame = new JFrame();
         JLabel statusbar = new JLabel("");
-        JScrollPane scrollPane = new JScrollPane(); // need to add RandomMiner(this.size, statusbar);
+        JScrollPane scrollPane = new JScrollPane(new RandomMiner(size, statusbar)); // need to add RandomMiner(this.size, statusbar);
 
         initializeScrollPane(scrollPane);
 
@@ -129,6 +131,15 @@ public class MenuGUI {
         public void actionPerformed(ActionEvent e) {
             sliderFrame.setVisible(false);
             createSmartFrame();
+        }
+    }
+
+    public class RandomButtonListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            sliderFrame.setVisible(false);
+            createRandomFrame();
         }
     }
 
