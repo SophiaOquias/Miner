@@ -36,7 +36,7 @@ import com.mine.userinterface.UserInterface;
 		MAX_PITS = (int) Math.floor(size * 0.25);
 		
 		InvalidPoints.add(new Position (0, 0)); //Position of Miner
-		
+
 		for(int i = 0; i < size; i++)
 			for(int j = 0; j < size; j++)
 				this.mine[i][j] = new Stone(new Position(i, j));
@@ -52,11 +52,6 @@ import com.mine.userinterface.UserInterface;
 		spawnAllPits();
 		for(int i = 0; i < PitPosList.size(); i++) {
 			mine[PitPosList.get(i).getX()][PitPosList.get(i).getY()] = new Pit(PitPosList.get(i));
-		}
-		
-		System.out.println("List of invalid points...");
-		for(int i = 0; i < InvalidPoints.size(); i++) {
-			System.out.printf(" x = %d, y = %d\n", InvalidPoints.get(i).getX(), InvalidPoints.get(i).getY());
 		}
 	}
 	
