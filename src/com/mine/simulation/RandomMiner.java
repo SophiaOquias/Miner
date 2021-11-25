@@ -146,7 +146,7 @@ public class RandomMiner extends JPanel{
 		// pushes only moveMiner if node has already been explored
 		else if(isInList(exploredNodes, rotateMiner) && !isInList(exploredNodes, moveMiner)) {
 			nodeList.push(moveMiner);
-		} else if(!isInList(exploredNodes, rotateMiner) && !isInList(exploredNodes, rotateMiner)){
+		} else if(!isInList(exploredNodes, rotateMiner) && !isInList(exploredNodes, moveMiner)){
 			nodeList.push(rotateMiner);
 			nodeList.push(moveMiner);
 		}
