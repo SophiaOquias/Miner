@@ -58,7 +58,7 @@ public class RandomMiner extends JPanel{
 		this.setBackground(Color.DARK_GRAY);
 
 		// initializes statusbar
-		this.statusbar.setText("Moves: \t Rotates: \t Scans: ");
+		this.statusbar.setText("Moves:   Rotates:   Scans:   Explored Nodes: ");
 
 		// initializes timer (responsible for animation of miner)
 		this.timer = new Timer(DELAY, new FastPlay());
@@ -139,14 +139,15 @@ public class RandomMiner extends JPanel{
 
 
 		// pushes only rotateMiner if miner is facing edge (OOB) or node has already been explored
-		if(manager.isMinerFacingEdge(quarry, miner) || moveMiner.scan(quarry) == 'P' ||
-				isInList(exploredNodes, moveMiner) && !isInList(exploredNodes, rotateMiner)) {
+		if(manager.isMinerFacingEdge(quarry, miner) || moveMiner.scan(quarry) == 'P' &&
+				(isInList(exploredNodes, moveMiner) && !isInList(exploredNodes, rotateMiner))) {
 			nodeList.push(rotateMiner);
+			System.out.println("1");
 		}
 		// pushes only moveMiner if node has already been explored
 		else if(isInList(exploredNodes, rotateMiner) && !isInList(exploredNodes, moveMiner)) {
 			nodeList.push(moveMiner);
-		} else {
+		} else if(!isInList(exploredNodes, rotateMiner) && !isInList(exploredNodes, rotateMiner)){
 			nodeList.push(rotateMiner);
 			nodeList.push(moveMiner);
 		}
@@ -166,7 +167,8 @@ public class RandomMiner extends JPanel{
 	private void updateStatusbar() {
 		statusbar.setText("Moves: " + miner.getMoves() +
 				"    Rotates: " +  miner.getRotates() +
-				"    Scans: " + miner.getScans());
+				"    Scans: " + miner.getScans() +
+				"    Explored Nodes: " + exploredNodes.size());
 	}
 
 	@Override

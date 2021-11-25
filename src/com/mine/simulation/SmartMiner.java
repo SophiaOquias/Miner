@@ -58,7 +58,7 @@ public class SmartMiner extends JPanel {
 		this.setBackground(Color.DARK_GRAY);
 
 		// initializes statusbar
-		this.statusbar.setText("Moves: \t Rotates: \t Scans: ");
+		this.statusbar.setText("Moves:   Rotates:   Scans:  Nodes Explored: ");
 
 		// initializes timer (responsible for animation of miner)
 		this.timer = new Timer(DELAY, new FastPlay());
@@ -150,11 +150,12 @@ public class SmartMiner extends JPanel {
 		}
 		// check if moveNode's h(n) >= rotateNode's h(n)
 		// whichever is pushed last becomes top of stack
-		else if(moveMiner.getHeuristicValue() >= rotateMiner.getHeuristicValue()) {
+		else if(!isInList(exploredNodes, rotateMiner) && !isInList(exploredNodes, rotateMiner)
+				&& moveMiner.getHeuristicValue() >= rotateMiner.getHeuristicValue()) {
 			nodeList.push(rotateMiner); // push rotate node
 			nodeList.push(moveMiner); // push move node
 		}
-		else {
+		else if(!isInList(exploredNodes, rotateMiner) && !isInList(exploredNodes, rotateMiner)){
 			nodeList.push(moveMiner); // push move node
 			nodeList.push(rotateMiner); // push rotate node
 		}
@@ -173,7 +174,8 @@ public class SmartMiner extends JPanel {
 	private void updateStatusbar() {
 		statusbar.setText("Moves: " + miner.getMoves() +
 				"    Rotates: " +  miner.getRotates() +
-				"    Scans: " + miner.getScans());
+				"    Scans: " + miner.getScans() +
+				"    Nodes Explored: " + exploredNodes.size());
 	}
 
 	@Override
