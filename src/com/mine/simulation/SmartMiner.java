@@ -145,19 +145,20 @@ public class SmartMiner extends JPanel {
 			nodeList.push(rotateMiner);
 		}
 		// pushes only moveMiner if node has already been explored
-		else if(isInList(exploredNodes, rotateMiner) && !isInList(exploredNodes, rotateMiner)) {
+		else if(isInList(exploredNodes, rotateMiner) && !isInList(exploredNodes, moveMiner)) {
 			nodeList.push(moveMiner);
 		}
 		// check if moveNode's h(n) >= rotateNode's h(n)
 		// whichever is pushed last becomes top of stack
-		else if(!isInList(exploredNodes, rotateMiner) && !isInList(exploredNodes, rotateMiner)
-				&& moveMiner.getHeuristicValue() >= rotateMiner.getHeuristicValue()) {
-			nodeList.push(rotateMiner); // push rotate node
-			nodeList.push(moveMiner); // push move node
-		}
-		else if(!isInList(exploredNodes, rotateMiner) && !isInList(exploredNodes, rotateMiner)){
-			nodeList.push(moveMiner); // push move node
-			nodeList.push(rotateMiner); // push rotate node
+		else if(!isInList(exploredNodes, rotateMiner) && !isInList(exploredNodes, moveMiner)) {
+			if(moveMiner.getHeuristicValue() >= rotateMiner.getHeuristicValue()) {
+				nodeList.push(rotateMiner); // push rotate node
+				nodeList.push(moveMiner); // push move node
+			}
+			else {
+				nodeList.push(moveMiner); // push move node
+				nodeList.push(rotateMiner); // push rotate node
+			}
 		}
 	}
 
