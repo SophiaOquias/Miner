@@ -140,8 +140,8 @@ public class SmartMiner extends JPanel {
 		moveMiner.incrementScans();
 
 		// pushes only rotateMiner if miner is facing edge (OOB) or node has already been explored
-		if(manager.isMinerFacingEdge(quarry, miner) ||
-				isInList(exploredNodes, moveMiner) && !isInList(exploredNodes, rotateMiner)) {
+		if((manager.isMinerFacingEdge(quarry, miner) || isInList(exploredNodes, moveMiner))
+				&& !isInList(exploredNodes, rotateMiner)) {
 			nodeList.push(rotateMiner);
 		}
 		// pushes only moveMiner if node has already been explored

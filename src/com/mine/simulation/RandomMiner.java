@@ -139,10 +139,9 @@ public class RandomMiner extends JPanel{
 
 
 		// pushes only rotateMiner if miner is facing edge (OOB) or node has already been explored
-		if(manager.isMinerFacingEdge(quarry, miner) || moveMiner.scan(quarry) == 'P' &&
-				(isInList(exploredNodes, moveMiner) && !isInList(exploredNodes, rotateMiner))) {
+		if((manager.isMinerFacingEdge(quarry, miner) || moveMiner.scan(quarry) == 'P' || isInList(exploredNodes, moveMiner))
+				&& !isInList(exploredNodes, rotateMiner)) {
 			nodeList.push(rotateMiner);
-			System.out.println("1");
 		}
 		// pushes only moveMiner if node has already been explored
 		else if(isInList(exploredNodes, rotateMiner) && !isInList(exploredNodes, moveMiner)) {
