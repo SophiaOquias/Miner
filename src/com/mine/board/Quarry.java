@@ -37,31 +37,21 @@ import com.mine.userinterface.UserInterface;
 		
 		InvalidPoints.add(new Position (0, 0)); //Position of Miner
 		
-		System.out.println("Filling quarry with Stone...");
 		for(int i = 0; i < size; i++)
 			for(int j = 0; j < size; j++)
 				this.mine[i][j] = new Stone(new Position(i, j));
-		
-		System.out.println("Spawning Gold...");
+
 		spawnPotOfGold();
-		System.out.printf("x = %d, y = %d\n", GoldPos.getX(), GoldPos.getY());
-		System.out.println("Importing Gold...");
 		mine[GoldPos.getX()][GoldPos.getY()] = new PotOfGold(GoldPos);
-		
-		System.out.println("Spawning Beacons...");
+
 		spawnAllBeacons();
-		System.out.println("Importing Beacons... n = " + BeaconPosList.size());
 		for(int i = 0; i < BeaconPosList.size(); i++) {
 			mine[BeaconPosList.get(i).getX()][BeaconPosList.get(i).getY()] = new Beacon(BeaconPosList.get(i));
-			System.out.printf("x = %d, y = %d\n", BeaconPosList.get(i).getX(), BeaconPosList.get(i).getY());
 		}
-		
-		System.out.println("Spawning Pits...");
+
 		spawnAllPits();
-		System.out.println("Importing Pits... n = " + PitPosList.size());
 		for(int i = 0; i < PitPosList.size(); i++) {
 			mine[PitPosList.get(i).getX()][PitPosList.get(i).getY()] = new Pit(PitPosList.get(i));
-			System.out.printf("x = %d, y = %d\n", PitPosList.get(i).getX(), PitPosList.get(i).getY());
 		}
 		
 		System.out.println("List of invalid points...");
@@ -169,13 +159,5 @@ import com.mine.userinterface.UserInterface;
 
 	public void setGoldPos(Position goldPos) {
 		this.GoldPos = goldPos;
-	}
-	
-	public static void main(String[] args) {
-		Quarry quarry = new Quarry(4);
-		UserInterface ui = new UserInterface();
-		Miner miner = new Miner();
-		
-		ui.displayQuarry(quarry, miner);
 	}
 }
