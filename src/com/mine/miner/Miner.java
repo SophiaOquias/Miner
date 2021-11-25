@@ -44,7 +44,7 @@ public class Miner {
     public char scan(Quarry quarry){
 
         if(this.front == NORTH) {
-            for(int i = this.x - 1; i >= 0; i--) {
+            for(int i = this.x; i >= 0; i--) {
                 Piece scannedPiece = quarry.getPiece(i, this.y);
                 if(scannedPiece instanceof Beacon) return 'B';
                 else if(scannedPiece instanceof PotOfGold) return 'G';
@@ -53,7 +53,7 @@ public class Miner {
         }
 
         else if(this.front == EAST) {
-            for(int i = this.y + 1; i < quarry.getSize(); i++) {
+            for(int i = this.y; i < quarry.getSize(); i++) {
                 Piece scannedPiece = quarry.getPiece(this.x, i);
                 if(scannedPiece instanceof Beacon) return 'B';
                 else if(scannedPiece instanceof PotOfGold) return 'G';
@@ -62,7 +62,7 @@ public class Miner {
         }
 
         else if(this.front == SOUTH) {
-            for(int i = this.x + 1; i < quarry.getSize(); i++) {
+            for(int i = this.x; i < quarry.getSize(); i++) {
                 Piece scannedPiece = quarry.getPiece(i, this.y);
                 if(scannedPiece instanceof Beacon) return 'B';
                 else if(scannedPiece instanceof PotOfGold) return 'G';
@@ -70,8 +70,8 @@ public class Miner {
             }
         }
 
-        if(this.front == WEST) {
-            for(int i = this.y - 1; i >= 0; i--) {
+        else if(this.front == WEST) {
+            for(int i = this.y; i >= 0; i--) {
                 Piece scannedPiece = quarry.getPiece(this.x, i);
                 if(scannedPiece instanceof Beacon) return 'B';
                 else if(scannedPiece instanceof PotOfGold) return 'G';
