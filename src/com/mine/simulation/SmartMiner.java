@@ -137,7 +137,7 @@ public class SmartMiner extends JPanel {
 		rotateMiner.rotate();
 		rotateMiner.incrementRotates();
 		rotateMiner.setHeuristicValue(rotateMiner.scan(quarry));
-		moveMiner.incrementScans();
+		rotateMiner.incrementScans();
 
 		// pushes only rotateMiner if miner is facing edge (OOB) or node has already been explored
 		if((manager.isMinerFacingEdge(quarry, miner) || isInList(exploredNodes, moveMiner))
