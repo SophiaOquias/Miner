@@ -100,10 +100,12 @@ import com.mine.userinterface.UserInterface;
     private Position spawnOneBeacon() {
     	Random rand = new Random();
     	Position BeaconPos;
+		int m;
 
     	do {
     		BeaconPos = new Position(rand.nextInt(size), rand.nextInt(size));
-    	}while(isInvalidPoint(BeaconPos));
+			m = Math.abs(GoldPos.getX() - BeaconPos.getX()) + Math.abs(GoldPos.getY() - BeaconPos.getY());
+    	}while(isInvalidPoint(BeaconPos) || m >= size);
     	
     	InvalidPoints.add(BeaconPos);
     	
